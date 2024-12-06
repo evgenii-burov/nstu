@@ -1,0 +1,8 @@
+﻿  functions.cpp
+C:\Users\evgen\Documents\НГТУ\Численные методы\3 курс\ChisMetodyLab1\functions.cpp(351,12): warning C4101: al_i_k: неиспользованная локальная переменная
+  Создание кода
+  2 of 167 functions ( 1.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    4 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  ChisMetodyLab1.vcxproj -> C:\Users\evgen\Documents\НГТУ\Численные методы\3 курс\ChisMetodyLab1\x64\Release\ChisMetodyLab1.exe

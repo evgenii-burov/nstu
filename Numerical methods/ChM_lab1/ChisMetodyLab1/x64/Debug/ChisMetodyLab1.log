@@ -1,0 +1,5 @@
+﻿  ChisMetodyLab1.cpp
+  functions.cpp
+  Создание кода...
+C:\Users\evgen\Documents\НГТУ\Численные методы\3 курс\ChisMetodyLab1\functions.cpp(400,12): warning C4101: al_i_k: неиспользованная локальная переменная
+  ChisMetodyLab1.vcxproj -> C:\Users\evgen\Documents\НГТУ\Численные методы\3 курс\ChisMetodyLab1\x64\Debug\ChisMetodyLab1.exe
