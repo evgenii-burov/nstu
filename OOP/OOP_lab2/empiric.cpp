@@ -200,7 +200,7 @@ double Empiric::randNum() const
 	return (x_min + interval_index * h) + h * r;
 }
 
-double Empiric::getValue(char value_desired) const
+double* Empiric::getCharacteristics() const
 {
 	double d = 0;
 	double m = 0;
@@ -226,19 +226,8 @@ double Empiric::getValue(char value_desired) const
 		e += pow((data[i] - m), 4);
 	}
 	e = e / (n * pow(d, 2)) - 3;
-	switch (value_desired)
-	{
-	default:
-		throw(std::pair<std::string, char>("Incorrect parameter: value_desired,", value_desired));
-	case'M':
-		return m;
-	case'D':
-		return d;
-	case'A':
-		return a;
-	case'E':
-		return e;
-	}
+	double characteristics[4]{ m, d, a, e };
+	return characteristics;
 }
 
 double Empiric::getDensityFunctionOfX(double x) const

@@ -2,8 +2,8 @@
 
 Primary::Primary(double shift0, double scale0, double form0) :
     shift(shift0),
-    scale(scale0 > 0 ? scale0 : throw(std::pair<std::string, double>("Incorrect parameter: scale,", scale0))),
-    form(form0 > 0 && form0 < 1 ? form0 : throw(std::pair<std::string, double>("Incorrect parameter: form,", form0)))
+    scale(scale0 > 0 ? scale0 : throw "Incorrect parameter: scale"),
+    form(form0 > 0 && form0 < 1 ? form0 : throw "Incorrect parameter: form")
 {
     a = PI * tan(PI * form / 2);
     K = sin(PI * form) * (1 / PI + PI / (a * a)) + form;
@@ -22,8 +22,8 @@ Primary::Primary(std::string input_file_name)
     input_file >> shift0 >> scale0 >> form0;
     input_file.close();
     shift = shift0;
-    scale = scale0 > 0 ? scale0 : throw(std::pair<std::string, double>("Incorrect parameter: scale,", scale0));
-    form = form0 > 0 && form0 < 1 ? form0 : throw(std::pair<std::string, double>("Incorrect parameter: form,", form0));
+    scale = scale0 > 0 ? scale0 : throw "Incorrect parameter: scale";
+    form = form0 > 0 && form0 < 1 ? form0 : throw "Incorrect parameter: form";
     a = PI * tan(PI * form / 2);
     K = sin(PI * form) * (1 / PI + PI / (a * a)) + form;
     C = (sin(PI * form) / PI + form) / K;
@@ -32,12 +32,12 @@ Primary::Primary(std::string input_file_name)
 void Primary::setShift(double newShift) { shift = newShift; }
 double Primary::getShift() const { return shift; }
 
-void Primary::setScale(double newScale) { scale = newScale > 0 ? newScale : throw(std::pair<std::string, double>("Incorrect parameter: scale,", newScale)); }
+void Primary::setScale(double newScale) { scale = newScale > 0 ? newScale : throw "Incorrect parameter: scale"; }
 double Primary::getScale() const { return scale; }
 
 void Primary::setForm(double newForm)
 { 
-    form = newForm > 0 && newForm < 1 ? newForm : throw(std::pair<std::string, double>("Incorrect parameter: form,", newForm));
+    form = newForm > 0 && newForm < 1 ? newForm : throw "Incorrect parameter: form";
     a = PI * tan(PI * form / 2);
     K = sin(PI * form) * (1 / PI + PI / (a * a)) + form;
     C = (sin(PI * form) / PI + form) / K;
@@ -74,7 +74,7 @@ double Primary::randNum() const
     }
 }
 
-double Primary::getValue(char value_desired) const
+double* Primary::getCharacteristics() const
 {
     double M, D, A, E;
     M = shift; //shift scale transformation
@@ -86,19 +86,8 @@ double Primary::getValue(char value_desired) const
         (pow(D, 2) * pow(PI, 5) * K) + (2 * pow(cos(PI * form / 2), 2) / (pow(D, 2) * K)) * \
         (24 / pow(a, 5) + 24 * form / pow(a, 4) + 12 * pow(form, 2) / pow(a, 3) + 4 * pow(form, 3) / pow(a, 2) + pow(form, 4) / pow(a, 1)) - 3;
     E = (E + 3) * pow(scale, 4) - 3; //shift scale transformation
-    switch (value_desired)
-    {
-    default:
-        throw(std::pair<std::string, char>("Incorrect parameter: value_desired,", value_desired));
-    case 'M':
-        return M;
-    case 'D':
-        return D;
-    case 'A':
-        return A;
-    case 'E':
-        return E;
-    }
+    double characteristics[4]{M, D, A, E};
+    return characteristics;
 }
 
 double Primary::getDensityFunctionOfX(double x) const
@@ -122,7 +111,7 @@ void Primary::save(std::string output_file_name) const
     output_file.open(output_file_name);
     if (!output_file.is_open())
     {
-        throw(std::pair<std::string, std::string>("Unable to open file: ", output_file_name));
+        throw "Unable to open primary save file";
     }
     output_file << shift << '\t' << scale << '\t' << form << '\n';
     output_file.close();
@@ -134,12 +123,12 @@ void Primary::load(std::string input_file_name)
     input_file.open(input_file_name);
     if (!input_file.is_open())
     {
-        throw(std::pair<std::string, std::string>("Unable to open file: ", input_file_name));
+        throw "Unable to open primary load file";
     }
     double shift0, scale0, form0;
     input_file >> shift0 >>  scale0 >> form0;
     input_file.close();
     shift = shift0;
-    scale = scale0 > 0 ? scale0 : throw(std::pair<std::string, double>("Incorrect parameter: scale,", scale0));
-    form = form0 > 0 && form0 < 1 ? form0 : throw(std::pair<std::string, double>("Incorrect parameter: form,", form0));
+    scale = scale0 > 0 ? scale0 : throw "Incorrect parameter : scale";
+    form = form0 > 0 && form0 < 1 ? form0 : throw "Incorrect parameter: form";
 }

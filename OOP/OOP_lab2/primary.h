@@ -40,7 +40,7 @@ public:
 
 	double randNum() const;
 	//M, D, A, E
-	double getValue(char value_desired) const;
+	double* getCharacteristics() const;
 
 	double getDensityFunctionOfX(double x) const;
 

@@ -1,4 +1,23 @@
 ﻿  OOP_lab2.cpp
+  empiric.cpp
   functions.cpp
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\functions.cpp(131,56): error C2039: "getValue": не является членом "Primary".
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\primary.h(14,7):
+       см. объявление "Primary"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\functions.cpp(182,56): error C2039: "getValue": не является членом "Primary".
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\primary.h(14,7):
+       см. объявление "Primary"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\functions.cpp(236,48): error C2039: "getValue": не является членом "Empiric".
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\empiric.h(5,7):
+       см. объявление "Empiric"
+  
+  mixture.cpp
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\mixture.cpp(92,24): warning C4101: F: неиспользованная локальная переменная
+  primary.cpp
   Создание кода...
-  OOP_lab2.vcxproj -> C:\Users\evgen\source\repos\OOP_lab2\x64\Debug\OOP_lab2.exe
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\primary.cpp(90,1): warning C4172: возвращаемый адрес локальной переменной или временного : characteristics
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\mixture.cpp(114,1): warning C4172: возвращаемый адрес локальной переменной или временного : characteristics
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\empiric.cpp(230,1): warning C4172: возвращаемый адрес локальной переменной или временного : characteristics
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab2\OOP_lab2.cpp(11,1): warning C4172: возвращаемый адрес локальной переменной или временного : arr
