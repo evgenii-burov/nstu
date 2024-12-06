@@ -5,12 +5,18 @@
 class Empiric
 {
 private:
+	//data size
 	int n;
+	//freq size
 	int k;
+	//data sample
 	double* data;
+	//data sample frequencies
 	double* freq;
     double data_min;
     double data_max;
+
+	double* getDataFrequencies();
 public:
 	Empiric(std::string size_file_name, std::string data_file_name, std::string freq_file_name);
 
@@ -33,5 +39,3 @@ public:
 
 	void load(std::string size_file_name, std::string data_file_name, std::string freq_file_name);
 };
-
-double* getDataFrequencies(double*& data, const int& N, const int& k);

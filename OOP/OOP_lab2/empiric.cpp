@@ -2,36 +2,27 @@
 #include "mixture.h"
 #include "empiric.h"
 
-double* getDataFrequencies(double*& data, const int& n, const int& k)
+double* Empiric::getDataFrequencies()
 {
-    double x_min = DBL_MAX;
-    double x_max = DBL_MIN;
-	double* frequencies = new double[k];
-    for (int i = 0; i < n; i++)
-    {
-        if (data[i] < x_min)
-            x_min = data[i];
-        if (data[i] > x_max)
-            x_max = data[i];
-    }
-    double R = x_max - x_min;
+	freq = new double[k];
+    double R = data_max - data_min;
     double h = R / k;
     int interval_index = 0;
     for (int i = 0; i < k; i++)
     {
-        frequencies[i] = 0;
+        freq[i] = 0;
     }
     for (int i = 0; i < n; i++)
     {
-        interval_index = int((data[i] - x_min) / h); //(data[i] - x_min)/h = 0..k
-        interval_index -= int(((data[i] - x_min) / h) / k);
-        frequencies[interval_index]++;
+        interval_index = int((data[i] - data_min) / h); //(data[i] - x_min)/h = 0..k
+        interval_index -= int(((data[i] - data_min) / h) / k);
+        freq[interval_index]++;
     }
 	for (int i = 0; i < k; i++)
 	{
-		frequencies[i] /= n;
+		freq[i] /= n;
 	}
-	return frequencies;
+	return freq;
 }
 
 Empiric::Empiric(std::string size_file_name, std::string data_file_name, std::string freq_file_name)
@@ -87,7 +78,7 @@ Empiric::Empiric(int n0, Primary& prim, int k0) :
 		if (data[i] < data_min)
 			data_min = data[i];
 	}
-	freq = getDataFrequencies(data, n, k);
+	freq = getDataFrequencies();
 }
 
 Empiric::Empiric(int n0, Mixture& mixt, int k0) :
@@ -108,7 +99,7 @@ data(new double[n])
 		if (data[i] < data_min)
 			data_min = data[i];
 	}
-	freq = getDataFrequencies(data, n, k);
+	freq = getDataFrequencies();
 }
 
 Empiric::Empiric(int n0, Empiric& emp, int k0) :
@@ -129,7 +120,7 @@ Empiric::Empiric(int n0, Empiric& emp, int k0) :
 		if (data[i] < data_min)
 			data_min = data[i];
 	}
-	freq = getDataFrequencies(data, n, k);
+	freq = getDataFrequencies();
 }
 
 Empiric::~Empiric() {
@@ -137,19 +128,23 @@ Empiric::~Empiric() {
 	delete[] freq;
 }
 
-Empiric::Empiric(const Empiric& emp)  :
+Empiric::Empiric(const Empiric& emp) :
 	n(emp.n),
 	k(emp.k),
 	data_min(emp.data_min),
 	data_max(emp.data_max)
 {
+	delete[] data;
+	data = new double[n];
 	for (int i = 0; i < n; i++)
 	{
-		data[i] = emp.data[1];
+		data[i] = emp.data[i];
 	}
+	delete[] freq;
+	freq = new double[k];
 	for (int i = 0; i < k; i++)
 	{
-		freq[i] = emp.freq[1];
+		freq[i] = emp.freq[i];
 	}
 }
 
