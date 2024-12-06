@@ -18,7 +18,7 @@ private:
 
 	double* getDataFrequencies();
 public:
-	Empiric(std::string size_file_name, std::string data_file_name, std::string freq_file_name);
+	Empiric(std::string input_file_name);
 
 	Empiric(int n0, Primary& prim, int k0 = 1);
 	Empiric(int n0, Mixture& mixt, int k0 = 1);
@@ -35,7 +35,7 @@ public:
 
 	double getDensityFunctionOfX(double x) const;
 
-	void save(std::string size_file_name, std::string data_file_name, std::string freq_file_name) const;
+	void save(std::string output_file_name) const;
 
-	void load(std::string size_file_name, std::string data_file_name, std::string freq_file_name);
+	void load(std::string input_file_name);
 };

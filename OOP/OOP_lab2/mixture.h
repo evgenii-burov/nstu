@@ -4,7 +4,7 @@
 class Mixture
 {
 private:
-	Primary prm1, prm2;
+	Primary d1, d2;
 	double p;
 public:
 	Mixture(std::string input_file_name);

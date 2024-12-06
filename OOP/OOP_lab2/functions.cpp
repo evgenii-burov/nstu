@@ -207,11 +207,11 @@ void testMixture()
 
 void testEmpiric()
 {
-    Primary prm1 = Primary(0, 1, .8);
-    Empiric emp1 = Empiric(100, prm1);
+    Primary d1 = Primary(0, 1, .8);
+    Empiric emp1 = Empiric(100, d1);
     emp1 = emp1;
-    Primary prm2 = Primary(0, 1, .2);
-    Mixture mix1 = Mixture(prm1, prm2, .5);
+    Primary d2 = Primary(0, 1, .2);
+    Mixture mix1 = Mixture(d1, d2, .5);
     srand(10);
     Empiric emp2 = Empiric(1000000, mix1);
     //emp2 = emp1;

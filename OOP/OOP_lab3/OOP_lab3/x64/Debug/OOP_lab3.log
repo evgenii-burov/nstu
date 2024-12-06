@@ -1,0 +1,20 @@
+﻿  distr.cpp
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(10,20): error C2065: M_PI: необъявленный идентификатор
+  (компиляция исходного файла "distr.cpp")
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(111,6): error C2760: синтаксическая ошибка: непредвиденный элемент "=". Ожидается "{"
+  (компиляция исходного файла "distr.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(111,6):
+      контекст создания экземпляра шаблона (сначала самый старый)
+          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(103,8):
+          при компиляции шаблона класса "Distr::Mixture"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(111,11): error C2059: синтаксическая ошибка: >
+  (компиляция исходного файла "distr.cpp")
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(111,30): error C2334: непредвиденные лексемы перед ":"; пропуск вероятного тела функции
+  (компиляция исходного файла "distr.cpp")
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(134,2): error C1903: не удается восстановить после предыдущих ошибок; остановка компиляции
+  (компиляция исходного файла "distr.cpp")
+  

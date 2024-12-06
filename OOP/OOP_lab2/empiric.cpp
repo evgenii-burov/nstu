@@ -25,34 +25,30 @@ double* Empiric::getDataFrequencies()
 	return freq;
 }
 
-Empiric::Empiric(std::string size_file_name, std::string data_file_name, std::string freq_file_name)
+Empiric::Empiric(std::string input_file_name)
 {
 	std::ifstream input_file;
-	input_file.open(size_file_name);
+	input_file.open(input_file_name);
 	if (!input_file.is_open())
 	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", size_file_name));
+		throw "Unable to open empiric constructor file";
 	}
 	int n0, k0;
 	input_file >> n0 >> k0;
-	n = n0 > 1 ? n0 : throw(std::pair<std::string, double>("Incorrect parameter: n,", n0));
+	n = n0 > 1 ? n0 : throw "Incorrect parameter : n";
 	k = k0 > 1 ? k0 : int(log2(n)) + 1;
-	input_file.close();
-	input_file.open(data_file_name);
-	if (!input_file.is_open())
-	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", data_file_name));
-	}
+	data = new double[n];
+	data_min = DBL_MAX;
+	data_max = DBL_MIN;
 	for (int i = 0; i < n; i++)
 	{
 		input_file >> data[i];
+		if (data[i] < data_min)
+			data_min = data[i];
+		if (data[i] > data_max)
+			data_max = data[i];
 	}
-	input_file.close();
-	input_file.open(freq_file_name);
-	if (!input_file.is_open())
-	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", freq_file_name));
-	}
+	freq = new double[k];
 	for (int i = 0; i < k; i++)
 	{
 		input_file >> freq[i];
@@ -61,7 +57,7 @@ Empiric::Empiric(std::string size_file_name, std::string data_file_name, std::st
 }
 
 Empiric::Empiric(int n0, Primary& prim, int k0) :
-	n(n0 > 1 ? n0 : throw(std::pair<std::string, double>("Incorrect parameter: n,", n0))),
+	n(n0 > 1 ? n0 : throw "Incorrect parameter: n"),
 	k(k0 > 1 ? k0 : int(log2(n)) + 1),
 	data(new double[n])
 {
@@ -82,7 +78,7 @@ Empiric::Empiric(int n0, Primary& prim, int k0) :
 }
 
 Empiric::Empiric(int n0, Mixture& mixt, int k0) :
-n(n0 > 1 ? n0 : throw(std::pair<std::string, double>("Incorrect parameter: n,", n0))),
+n(n0 > 1 ? n0 : throw "Incorrect parameter: n"),
 k(k0 > 1 ? k0 : int(log2(n)) + 1),
 data(new double[n])
 {
@@ -103,7 +99,7 @@ data(new double[n])
 }
 
 Empiric::Empiric(int n0, Empiric& emp, int k0) :
-	n(n0 > 1 ? n0 : throw(std::pair<std::string, double>("Incorrect parameter: n,", n0))),
+	n(n0 > 1 ? n0 : throw "Incorrect parameter: n"),
 	k(k0 > 1 ? k0 : int(log2(n)) + 1),
 	data(new double[n])
 {
@@ -135,17 +131,27 @@ Empiric::Empiric(const Empiric& emp) :
 	data_max(emp.data_max)
 {
 	delete[] data;
-	data = new double[n];
-	for (int i = 0; i < n; i++)
+	if (n)
 	{
-		data[i] = emp.data[i];
+		data = new double[n];
+		for (int i = 0; i < n; i++)
+		{
+			data[i] = emp.data[i];
+		}
 	}
+	else
+		data = nullptr;
 	delete[] freq;
-	freq = new double[k];
-	for (int i = 0; i < k; i++)
+	if (k)
 	{
-		freq[i] = emp.freq[i];
+		freq = new double[k];
+		for (int i = 0; i < k; i++)
+		{
+			freq[i] = emp.freq[i];
+		}
 	}
+	else
+		freq = nullptr;
 }
 
 Empiric& Empiric::operator=(const Empiric& emp)
@@ -239,69 +245,66 @@ double Empiric::getDensityFunctionOfX(double x) const
 	return freq[interval_index];
 }
 
-void Empiric::save(std::string size_file_name, std::string data_file_name, std::string freq_file_name) const
+void Empiric::save(std::string output_file_name) const
 {
 	std::ofstream output_file;
-	output_file.open(size_file_name);
+	output_file.open(output_file_name);
 	if (!output_file.is_open())
 	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", size_file_name));
+		throw "Unable to open empiric save file";
 	}
-	output_file << n << ' ' << k;
-	output_file.close();
-	output_file.open(data_file_name);
-	if (!output_file.is_open())
-	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", data_file_name));
-	}
+	output_file << n << "\t" << k << "\n";
 	for (int i = 0; i < n; i++)
 	{
-		output_file << data[i] << ' ';
-	}
-	output_file.close();
-	output_file.open(freq_file_name);
-	if (!output_file.is_open())
-	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", freq_file_name));
+		output_file << data[i] << "\t";
 	}
 	for (int i = 0; i < k; i++)
 	{
-		output_file << freq[i] << ' ';
+		output_file << freq[i] << "\t";
 	}
+	output_file << "\n";
 	output_file.close();
 }
 
-void Empiric::load(std::string size_file_name, std::string data_file_name, std::string freq_file_name)
+void Empiric::load(std::string input_file_name)
 {
 	std::ifstream input_file;
-	input_file.open(size_file_name);
+	input_file.open(input_file_name);
 	if (!input_file.is_open())
 	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", size_file_name));
+		throw "Unable to open empiric load file";
 	}
 	int n0, k0;
 	input_file >> n0 >> k0;
-	n = n0 > 1 ? n0 : throw(std::pair<std::string, double>("Incorrect parameter: n,", n0));
+	n = n0 > 1 ? n0 : throw "Incorrect parameter : n";
 	k = k0 > 1 ? k0 : int(log2(n)) + 1;
-	input_file.close();
-	input_file.open(data_file_name);
-	if (!input_file.is_open())
+	data_min = DBL_MAX;
+	data_max = DBL_MIN;
+	delete[] data;
+	if (n)
 	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", data_file_name));
+		data = new double[n];
+		for (int i = 0; i < n; i++)
+		{
+			input_file >> data[i];
+			if (data[i] < data_min)
+				data_min = data[i];
+			if (data[i] > data_max)
+				data_max = data[i];
+		}
 	}
-	for (int i = 0; i < n; i++)
+	else
+		data = nullptr;
+	delete[] freq;
+	if (k)
 	{
-		input_file >> data[i];
+		freq = new double[k];
+		for (int i = 0; i < k; i++)
+		{
+			input_file >> freq[i];
+		}
 	}
-	input_file.close();
-	input_file.open(freq_file_name);
-	if (!input_file.is_open())
-	{
-		throw(std::pair<std::string, std::string>("Unable to open file: ", freq_file_name));
-	}
-	for (int i = 0; i < k; i++)
-	{
-		input_file >> freq[i];
-	}
+	else
+		freq = nullptr;
 	input_file.close();
 }
