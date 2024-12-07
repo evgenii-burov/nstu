@@ -2,29 +2,6 @@
 #include "mixture.h"
 #include "empiric.h"
 
-double* Empiric::getDataFrequencies()
-{
-	freq = new double[k];
-    double R = data_max - data_min;
-    double h = R / k;
-    int interval_index = 0;
-    for (int i = 0; i < k; i++)
-    {
-        freq[i] = 0;
-    }
-    for (int i = 0; i < n; i++)
-    {
-        interval_index = int((data[i] - data_min) / h); //(data[i] - x_min)/h = 0..k
-        interval_index -= int(((data[i] - data_min) / h) / k);
-        freq[interval_index]++;
-    }
-	for (int i = 0; i < k; i++)
-	{
-		freq[i] /= n;
-	}
-	return freq;
-}
-
 Empiric::Empiric(std::string input_file_name)
 {
 	std::ifstream input_file;

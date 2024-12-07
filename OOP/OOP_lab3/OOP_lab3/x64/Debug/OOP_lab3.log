@@ -1,20 +1,162 @@
 ﻿  distr.cpp
-C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(10,20): error C2065: M_PI: необъявленный идентификатор
-  (компиляция исходного файла "distr.cpp")
-  
-C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(111,6): error C2760: синтаксическая ошибка: непредвиденный элемент "=". Ожидается "{"
-  (компиляция исходного файла "distr.cpp")
-      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(111,6):
+  OOP_lab3.cpp
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(221,24): warning C4101: F: неиспользованная локальная переменная
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(221,24):
       контекст создания экземпляра шаблона (сначала самый старый)
-          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(103,8):
-          при компиляции шаблона класса "Distr::Mixture"
+          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\OOP_lab3.cpp(60,31):
+          выполняется компиляция ссылки на экземпляр класс шаблон функции "Distr::Mixture<Distr::Primary,Distr::Primary>"
+          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(219,1):
+          во время компиляции функции-члена класс шаблон "double *Distr::Mixture<Distr::Primary,Distr::Primary>::getCharacteristics(void) const"
   
-C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(111,11): error C2059: синтаксическая ошибка: >
-  (компиляция исходного файла "distr.cpp")
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(179,16): error C2039: "getA": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(179,16):
+      контекст создания экземпляра шаблона (сначала самый старый)
+          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\OOP_lab3.cpp(63,9):
+          выполняется компиляция ссылки на экземпляр класс шаблон функции "Distr::Mixture<Distr::Mixture<Distr::Primary,Distr::Primary>,Distr::Mixture<Distr::Primary,Distr::Primary>>"
+          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(172,1):
+          во время компиляции функции-члена класс шаблон "double Distr::Mixture<Distr::Mixture<Distr::Primary,Distr::Primary>,Distr::Mixture<Distr::Primary,Distr::Primary>>::randNum(void) const"
   
-C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(111,30): error C2334: непредвиденные лексемы перед ":"; пропуск вероятного тела функции
-  (компиляция исходного файла "distr.cpp")
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(180,16): error C2039: "getK": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
   
-C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(134,2): error C1903: не удается восстановить после предыдущих ошибок; остановка компиляции
-  (компиляция исходного файла "distr.cpp")
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(181,16): error C2039: "getC": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
   
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(182,17): error C2039: "getForm": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(183,17): error C2039: "getShift": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(184,21): error C2039: "getScale": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(188,16): error C2039: "getA": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(189,16): error C2039: "getK": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(190,16): error C2039: "getC": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(191,17): error C2039: "getForm": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(192,17): error C2039: "getShift": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(193,21): error C2039: "getScale": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(229,13): error C2039: "getShift": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(229,13):
+      контекст создания экземпляра шаблона (сначала самый старый)
+          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(219,1):
+          во время компиляции функции-члена класс шаблон "double *Distr::Mixture<Distr::Mixture<Distr::Primary,Distr::Primary>,Distr::Mixture<Distr::Primary,Distr::Primary>>::getCharacteristics(void) const"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(230,13): error C2039: "getShift": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(262,23): error C2039: "getShift": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(262,23):
+      контекст создания экземпляра шаблона (сначала самый старый)
+          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(255,1):
+          во время компиляции функции-члена класс шаблон "void Distr::Mixture<Distr::Mixture<Distr::Primary,Distr::Primary>,Distr::Mixture<Distr::Primary,Distr::Primary>>::save(std::string) const"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(262,48): error C2039: "getScale": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(262,73): error C2039: "getForm": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(263,23): error C2039: "getShift": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(263,48): error C2039: "getScale": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(263,73): error C2039: "getForm": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(285,8): error C2039: "setShift": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(285,8):
+      контекст создания экземпляра шаблона (сначала самый старый)
+          C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(270,1):
+          во время компиляции функции-члена класс шаблон "void Distr::Mixture<Distr::Mixture<Distr::Primary,Distr::Primary>,Distr::Mixture<Distr::Primary,Distr::Primary>>::load(std::string)"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(285,30): error C2039: "setScale": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(285,52): error C2039: "setForm": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(286,8): error C2039: "setShift": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(286,30): error C2039: "setScale": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(286,52): error C2039: "setForm": не является членом "Distr::Mixture<Distr::Primary,Distr::Primary>".
+  (компиляция исходного файла "OOP_lab3.cpp")
+      C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
+       см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
+  
+  Создание кода...
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.cpp(74,1): warning C4172: возвращаемый адрес локальной переменной или временного : characteristics
+C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.cpp(327,1): warning C4172: возвращаемый адрес локальной переменной или временного : characteristics

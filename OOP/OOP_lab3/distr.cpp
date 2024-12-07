@@ -170,7 +170,7 @@ namespace Distr
 		input_file.close();
 	}
 
-	Empiric::Empiric(int n0, IDistribution& d, int k0 = 1) :
+	Empiric::Empiric(int n0, IDistribution& d, int k0) :
 		n(n0 > 1 ? n0 : throw "Incorrect parameter: n"),
 		k(k0 > 1 ? k0 : int(log2(n)) + 1),
 		data(new double[n])
