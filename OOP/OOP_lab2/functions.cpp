@@ -59,7 +59,6 @@ void getParametersPrimary(Primary& primary)
     std::cout << "Getting parameters:\n" << "shift: " << primary.getShift() << '\n' << "scale: " << primary.getScale() << '\n' << "form: " << primary.getForm() << "\n\n";
 }
 
-
 void getSampleFrequencies(double* sample, double* frequencies, int n, int k)
 {
     double x_min = DBL_MAX;

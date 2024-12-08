@@ -7,5 +7,4 @@ int main()
 {
 	srand(12);
 
-
 }

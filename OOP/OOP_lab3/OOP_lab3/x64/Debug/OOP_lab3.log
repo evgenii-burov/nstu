@@ -1,5 +1,4 @@
-﻿  distr.cpp
-  OOP_lab3.cpp
+﻿  OOP_lab3.cpp
 C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(221,24): warning C4101: F: неиспользованная локальная переменная
   (компиляция исходного файла "OOP_lab3.cpp")
       C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(221,24):
@@ -157,6 +156,3 @@ C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(286,52): error C2039: "set
       C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.h(105,8):
        см. объявление "Distr::Mixture<Distr::Primary,Distr::Primary>"
   
-  Создание кода...
-C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.cpp(74,1): warning C4172: возвращаемый адрес локальной переменной или временного : characteristics
-C:\Users\evgen\source\repos\nstu\OOP\OOP_lab3\distr.cpp(327,1): warning C4172: возвращаемый адрес локальной переменной или временного : characteristics
