@@ -88,7 +88,7 @@ def start():
             m2 = f"В двоичном представлении: {prime_number_binary}"
             break
     end = time.time()
-    m3 = f"Время работы программы: {end-start} секунд"
+    m3 = f"Время работы программы в секундах: {end-start}"
     m4 = f"Итераций главного цикла: {iterations}"
     m5 = f"Является ли число на самом деле простым: {primalityTestTrue(prime_number)}"
     messagebox.showinfo("Число сгенерировано", f"{m1}\n{m2}\n{m3}\n{m4}\n{m5}")

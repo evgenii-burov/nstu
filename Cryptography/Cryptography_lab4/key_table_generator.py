@@ -3,8 +3,8 @@ import random
 
 def writeKeyTableToFile(key_seed:float=5)->None:
     random.seed(key_seed)
-    alphabet = [chr(i) for i in range(ord('A'), ord('Z')+1) ]
-    alphabet.extend('_')
+    alphabet = [chr(i) for i in range(ord('A'), ord('D')+1) ]
+    #alphabet.extend('_')
     alphabet_size = len(alphabet)
     letter_combinations = [(i,j) for j in range(alphabet_size) for i in range(alphabet_size)]
     random.shuffle(letter_combinations)
