@@ -11,8 +11,9 @@ LinearSystem::LinearSystem(std::string input_file_name)
 	
 	if (n0 < 3)
 		throw("Incorrect parameter: n must be 3 or greater");
-	if (m0 < n0 - 3)
-		throw("Incorrect parameter: m must be n-1 or greater");
+	if (m0 < 2 || m0 > n0-1)
+		// 2<=m <= n-1
+		throw("Incorrect parameter: m must satisfy 2<=m<=n-1");
 	n = n0;
 	m = m0;
 
@@ -175,13 +176,98 @@ void LinearSystem::solveGauss_Seidel()
 	std::cout << "Gauss-Seidel iterations: " << iterations << "\n";
 }
 
+std::vector<precision> LinearSystem::getIthVectorR(int block_size, int block_i) const
+{
+	std::vector<precision> r;
+	r.resize(block_size);
+	for (int i = 0; i < block_size; i++)
+	{
+		r[i] = b[i];
+
+	}
+}
+
 void LinearSystem::solveBlockRelaxation(int block_size)
 {
 	if (n % block_size != 0)
-		throw("Incorrect parameter: block_size must divide the matrix evenly");
-	std::vector<std::vector<double>> matrix_block;
-	std::vector<double> x_block;
-	std::vector<double> b_block;
+		throw("Incorrect parameter: block_size must divide the matrix dimension evenly");
+	std::vector<std::vector<precision>> matrix_block;
+	std::vector<precision> vector_y;
+	std::vector<precision> vector_r;
+	//i is block slau index
+	for (int i = 0; i < n/block_size; i++)
+	{
+		matrix_block.resize(block_size);
+		//setting up the ith matrix block
+		//j is matrix block row index
+		for (int j = 0; j < block_size; j++)
+		{
+			matrix_block[j].resize(0);
+			// k is matrix block column index
+			for (int k = 0; k < block_size; k++)
+			{
+				int i_to_push, j_to_push;
+				i_to_push = block_size * i + j;
+				j_to_push =getDiagonalJFromDenseJ(i_to_push, block_size * i + k);
+				matrix_block[j].push_back(matrix[i_to_push][j_to_push]);
+			}
+		}
+		//printing matrix block
+		for (int j = 0; j < block_size; j++)
+		{
+			// k is matrix block column index
+			for (int k = 0; k < block_size; k++)
+			{
+				std::cout << matrix_block[j][k] << "\t";
+			}
+			std::cout << "\n";
+		}
+
+	}
+}
+
+int LinearSystem::getDiagonalJFromDenseJ(int i, int j) const
+{
+	if (abs(i - j) > 1 && abs(i - j) != m)
+	{
+		return -1;
+	}
+
+	if (abs(i - j) <= 1)
+	{
+		return 2 - (i - j);
+	}
+
+	if (i - j == m)
+	{
+		return 0;
+	}
+
+	if (i - j == -m)
+	{
+		return 4;
+	}
+}
+
+void LinearSystem::printAnotha() const
+{
+	std::cout << "\n\n";
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			int j_diag = getDiagonalJFromDenseJ(i, j);
+			if (j_diag != -1)
+			{
+				std::cout << matrix[i][j_diag] << "\t";
+			}
+			else
+			{
+				std::cout << 0 << "\t";
+			}
+		}
+		std::cout << "\n";
+	}
 }
 
 void LinearSystem::print() const
@@ -238,5 +324,20 @@ void LinearSystem::print() const
 	for (const auto elem : x)
 	{
 		std::cout << elem << "\t";
+	}
+}
+
+BlockSLAU::BlockSLAU(const LinearSystem& slau, int block_size0, int i_block, int j_block) :
+	block_size(slau.n% block_size0 == 0 ? block_size0 : throw "Block size must divide matrix dimension evenly"),
+	matrix(),
+	b(),
+	x()
+{
+	matrix.resize(block_size);
+	b.resize(block_size);
+	x.resize(block_size);
+	for (int i = 0; i < block_size; i++)
+	{
+		b.push_back(1);
 	}
 }

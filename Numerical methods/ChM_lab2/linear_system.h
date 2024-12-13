@@ -28,6 +28,7 @@ private:
 	precision eps = .00001;
 	precision omega_jacobi = 2. / 3;
 	precision omega_gauss_seidel = .5;
+	precision omega_block_relaxation = .5;
 	
 	//1 - standart
 	void initializeMatrix(int matrix_type);
@@ -37,6 +38,8 @@ private:
 	precision getRelativeDiscrepancy() const;
 	precision getScalarProductOfIthRowAndX(int i, std::vector<precision> x) const;
 	precision getNextIterationOfXIth(int i, precision omega) const;
+	int getDiagonalJFromDenseJ(int i, int j) const;
+	std::vector<precision> getIthVectorR(int block_size, int i) const;
 public:
 	// reads n0, m0, matrix_type
 	LinearSystem(std::string input_file_name);
@@ -49,4 +52,20 @@ public:
 
 	void print() const;
 
+	void printAnotha() const;
+
+	friend class BlockSLAU;
+};
+
+class BlockSLAU
+{
+private:
+	int block_size;
+	std::vector<std::vector<precision>> matrix;
+	std::vector<precision> x;
+	std::vector<precision> b;
+public:
+	BlockSLAU(const LinearSystem& slau, int block_size0, int i, int j);
+	void print() const;
+	
 };
