@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <random>
 
 typedef float precision;
 /*
@@ -38,8 +39,9 @@ private:
 	precision getRelativeDiscrepancy() const;
 	precision getScalarProductOfIthRowAndX(int i, std::vector<precision> x) const;
 	precision getNextIterationOfXIth(int i, precision omega) const;
-	int getDiagonalJFromDenseJ(int i, int j) const;
-	std::vector<precision> getIthVectorR(int block_size, int i) const;
+	//receives i and j indeces of an element in dense format,
+	//returns the corresponding element from the diagonal matrix
+	precision ithJthDenseElem(int i, int j) const;
 public:
 	// reads n0, m0, matrix_type
 	LinearSystem(std::string input_file_name);

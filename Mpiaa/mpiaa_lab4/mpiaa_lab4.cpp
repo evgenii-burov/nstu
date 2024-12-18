@@ -5,16 +5,55 @@ using namespace std;
 bool input_graph(vector < vector < int>>& graph);
 bool BFS(const vector < vector < int>>& graph, const int& start, const int& destination);
 
+std::vector<std::ifstream&> getInputStreams()
+{
+    int number_of_graphs = -1;
+    std::ifstream input_stream;
+    input_stream.open("n.txt");
+    if (!input_stream)
+    {
+        throw std::string("n.txt file couldn't be opened");
+    }
+    input_stream >> number_of_graphs;
+    if(number_of_graphs < 3)
+        throw std::string("Incorrect parameter: number of graphs must be greater than 2");
+    input_stream.close();
+    std::vector<std::ifstream&> input_streams;
+    for (int i = 1; i <= number_of_graphs; i++)
+    {
+        input_stream.open(std::to_string(i) + ".txt");
+        input_streams.push_back(input_stream);
+    }
+    return input_streams;
+}
+
 int main()
 {
-    std::ifstream input_stream;
-    input_stream.open("graph.txt");
-    Graph g = Graph(input_stream);
-    std::ofstream output_stream;
-    output_stream.open("adjacency_list.txt");
-    g.writeAdjacencyList(output_stream);
-    output_stream.open("vertex_list.txt");
-    g.BreadthFirstSearch(output_stream, 0);
+    //try
+    //{
+    //    std::ifstream input_stream;
+    //    input_stream.open("graph.txt");
+    //    Graph g = Graph(input_stream);
+    //    std::ofstream output_stream;
+    //    output_stream.open("adjacency_list.txt");
+    //    g.writeAdjacencyList(output_stream);
+    //    output_stream.open("vertex_list.txt");
+    //    g.breadthFirstSearch(output_stream, 1);
+    //    g.printGraphComponents();
+    //}
+    //catch (std::string error)
+    //{
+    //    std::cout << error;
+    //}
+    std::vector<std::ifstream> input_streams;
+    std::ifstream stream1;
+    stream1.open("1.txt");
+    std::ifstream stream2;
+    stream1.open("2.txt");
+    input_streams.push_back(stream1);
+    int a;
+    input_streams[0] >> a;
+    std::cout << a;
 }
 
 bool input_graph(vector < vector < int>>& graph)

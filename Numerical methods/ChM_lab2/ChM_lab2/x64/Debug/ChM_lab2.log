@@ -1,48 +1,48 @@
 ﻿  linear_system.cpp
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.h(28,18): warning C4305: инициализация: усечение из "double" в "precision"
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.h(29,18): warning C4305: инициализация: усечение из "double" в "precision"
   (компиляция исходного файла "linear_system.cpp")
   
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.h(29,30): warning C4305: инициализация: усечение из "double" в "precision"
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.h(30,30): warning C4305: инициализация: усечение из "double" в "precision"
   (компиляция исходного файла "linear_system.cpp")
   
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(34,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(34,26): warning C4244:         with
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(34,26): warning C4244:         [
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(34,26): warning C4244:             _Ty=precision
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(34,26): warning C4244:         ]
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(35,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(35,26): warning C4244:         with
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(35,26): warning C4244:         [
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(35,26): warning C4244:             _Ty=precision
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(35,26): warning C4244:         ]
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(36,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(36,26): warning C4244:         with
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(36,26): warning C4244:         [
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(36,26): warning C4244:             _Ty=precision
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(36,26): warning C4244:         ]
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(37,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(37,26): warning C4244:         with
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(37,26): warning C4244:         [
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(37,26): warning C4244:             _Ty=precision
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(37,26): warning C4244:         ]
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(38,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(38,26): warning C4244:         with
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(38,26): warning C4244:         [
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(38,26): warning C4244:             _Ty=precision
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(38,26): warning C4244:         ]
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(65,18): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(65,18): warning C4244:         with
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(65,18): warning C4244:         [
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(65,18): warning C4244:             _Ty=precision
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(65,18): warning C4244:         ]
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(71,18): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(71,18): warning C4244:         with
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(71,18): warning C4244:         [
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(71,18): warning C4244:             _Ty=precision
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(71,18): warning C4244:         ]
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(103,25): warning C4244: +=: преобразование "double" в "precision", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(104,16): warning C4244: +=: преобразование "double" в "precision", возможна потеря данных
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(146,12): warning C4101: norm: неиспользованная локальная переменная
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(166,12): warning C4101: norm: неиспользованная локальная переменная
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(238,1): warning C4715: LinearSystem::getDiagonalJFromDenseJ: значение возвращается не при всех путях выполнения
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(39,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(39,26): warning C4244:         with
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(39,26): warning C4244:         [
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(39,26): warning C4244:             _Ty=precision
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(39,26): warning C4244:         ]
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(40,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(40,26): warning C4244:         with
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(40,26): warning C4244:         [
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(40,26): warning C4244:             _Ty=precision
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(40,26): warning C4244:         ]
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(41,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(41,26): warning C4244:         with
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(41,26): warning C4244:         [
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(41,26): warning C4244:             _Ty=precision
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(41,26): warning C4244:         ]
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(42,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(42,26): warning C4244:         with
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(42,26): warning C4244:         [
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(42,26): warning C4244:             _Ty=precision
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(42,26): warning C4244:         ]
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(43,26): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(43,26): warning C4244:         with
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(43,26): warning C4244:         [
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(43,26): warning C4244:             _Ty=precision
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(43,26): warning C4244:         ]
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(70,18): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(70,18): warning C4244:         with
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(70,18): warning C4244:         [
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(70,18): warning C4244:             _Ty=precision
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(70,18): warning C4244:         ]
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(76,18): warning C4244: аргумент: преобразование "int" в "_Ty", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(76,18): warning C4244:         with
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(76,18): warning C4244:         [
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(76,18): warning C4244:             _Ty=precision
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(76,18): warning C4244:         ]
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(108,25): warning C4244: +=: преобразование "double" в "precision", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(109,16): warning C4244: +=: преобразование "double" в "precision", возможна потеря данных
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(151,12): warning C4101: norm: неиспользованная локальная переменная
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(171,12): warning C4101: norm: неиспользованная локальная переменная
+C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(336,1): warning C4715: LinearSystem::ithJthDenseElem: значение возвращается не при всех путях выполнения
   ChM_lab2.vcxproj -> C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\x64\Debug\ChM_lab2.exe

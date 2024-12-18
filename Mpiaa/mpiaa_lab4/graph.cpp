@@ -4,17 +4,17 @@ Graph::Graph(std::ifstream& input_stream)
 {
     if (!input_stream)
     {
-        throw "Graph file couldn't be opened";
+        throw std::string("Graph file couldn't be opened");
     }
     int numVertices0, numEdges0;
     input_stream >> numVertices0 >> numEdges0;
     if (numVertices0 < 1)
     {
-        throw "Incorrect parameter: number of vertices must be positive";
+        throw std::string("Incorrect parameter: number of vertices must be positive");
     }
     if (numEdges0 < 0 || numEdges >numVertices0 * (numVertices0 - 1) / 2)
     {
-        throw "Incorrect parameter: number of vertices must be positive";
+        throw std::string("Incorrect parameter: incorrect number of edges");
     }
     numEdges = numEdges0;
     numVertices = numVertices0;
@@ -27,7 +27,16 @@ Graph::Graph(std::ifstream& input_stream)
         graph[b - 1].push_back(a - 1);
     }
     input_stream.close();
+    for (auto& adj_list : graph)
+    {
+        vectorBubbleSort(adj_list);
+    }
 }
+
+//Graph::Graph(std::vector<std::ifstream&> input_streams)
+//{
+//
+//}
 
 void Graph::writeAdjacencyList(std::ofstream &output_stream) const
 {
@@ -43,11 +52,11 @@ void Graph::writeAdjacencyList(std::ofstream &output_stream) const
     output_stream.close();
 }
 
-void Graph::BreadthFirstSearch(std::ofstream& output_stream, int start) const
+void Graph::breadthFirstSearch(std::ofstream& output_stream, int start) const
 {
     std::vector<bool> visited(graph.size(), false);
     std::queue<int> plan;
-    plan.push(start);
+    plan.push(start-1);
     int currentVertex;
     while (!plan.empty())
     {
@@ -55,7 +64,7 @@ void Graph::BreadthFirstSearch(std::ofstream& output_stream, int start) const
         plan.pop();
         if (visited[currentVertex])
             continue;
-        output_stream << currentVertex << "\t";
+        output_stream << currentVertex + 1 << "\t";
         visited[currentVertex] = true;
         for (const auto& adjVertex : graph[currentVertex]) {
             if (!visited[adjVertex])
@@ -63,4 +72,70 @@ void Graph::BreadthFirstSearch(std::ofstream& output_stream, int start) const
         }
     }
     output_stream.close();
+}
+
+void Graph::printGraphComponents() const
+{
+    std::vector<std::vector<int>> graph_components;
+    std::vector<int> current_component;
+    std::vector<bool> visited;
+    std::queue<int> plan;
+    int current_vertex;
+    visited.assign(numVertices, false);
+    for (int start = 0; start < numVertices; start++)
+    {
+        current_component.resize(0);
+        if (visited[start])
+            continue;
+        plan.push(start);
+        while (!plan.empty())
+        {
+            current_vertex = plan.front();
+            plan.pop();
+            if (visited[current_vertex])
+                continue;
+            current_component.push_back(current_vertex);
+            visited[current_vertex] = true;
+            for (const auto& adjVertex : graph[current_vertex]) {
+                if (!visited[adjVertex])
+                    plan.push(adjVertex);
+            }
+        }
+        graph_components.push_back(current_component);
+    }
+    for (auto& component : graph_components)
+    {
+        vectorBubbleSort(component);
+    }
+    for (int i = 0; i < graph_components.size(); i ++)
+    {
+        std::cout << "Component #" << i+1 << ": ";
+        for (const auto& vertex : graph_components[i])
+        {
+            std::cout << vertex+1 << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+void Graph::vectorBubbleSort(std::vector<int>& v) const
+{
+    if (v.size() < 2)
+        return;
+    bool swapped = true;
+    int temporary;
+    for (int i = 0; swapped; i++)
+    {
+        swapped = false;
+        for (int j = 0; j < v.size() - 1 - i; j++)
+        {
+            if (v[j] > v[j + 1])
+            {
+                temporary = v[j];
+                v[j] = v[j + 1];
+                v[j + 1] = temporary;
+                swapped = true;
+            }
+        }
+    }
 }
