@@ -4,8 +4,9 @@
 #include <vector>
 #include <string>
 #include <random>
+#include <iomanip>
 
-typedef float precision;
+typedef double precision;
 /*
 ћатрица из варианта 1. –азмер блока в реализации блочной
 релаксации переменный. »сследовать зависимость скорости сходимости от размеров блока.
@@ -25,13 +26,12 @@ private:
 	std::vector<precision> x;
 	std::vector<precision> b;
 	std::vector<int> shift;
-	int max_iterations = 1000;
+	int max_iterations = 10000;
 	precision eps = .00001;
 	precision omega_jacobi = 2. / 3;
 	precision omega_gauss_seidel = .5;
 	precision omega_block_relaxation = .5;
 	
-	//1 - standart
 	void initializeMatrix(int matrix_type);
 	void initializeVectorB(int matrix_type);
 	void initializeVectorX(int matrix_type);
@@ -56,18 +56,10 @@ public:
 
 	void printAnotha() const;
 
-	friend class BlockSLAU;
-};
-
-class BlockSLAU
-{
-private:
-	int block_size;
-	std::vector<std::vector<precision>> matrix;
-	std::vector<precision> x;
-	std::vector<precision> b;
-public:
-	BlockSLAU(const LinearSystem& slau, int block_size0, int i, int j);
-	void print() const;
-	
+	void setWeights(precision w_j, precision w_g_s, precision w_b_r)
+	{
+		omega_jacobi = w_j;
+		omega_gauss_seidel = w_g_s;
+		omega_block_relaxation = w_b_r;
+	}
 };

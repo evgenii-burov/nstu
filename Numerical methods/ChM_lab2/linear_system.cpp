@@ -18,6 +18,12 @@ LinearSystem::LinearSystem(std::string input_file_name)
 	m = m0;
 
 	shift = { -m, -1, 0, 1, m};
+
+	precision var;
+	if (sizeof(var) == 4)
+		eps = 1e-6;
+	else
+		eps = 1e-14;
 	initializeMatrix(matrix_type);
 	initializeVectorB(matrix_type);
 	initializeVectorX(matrix_type);
@@ -71,11 +77,19 @@ void LinearSystem::initializeVectorB(int matrix_type)
 		}
 		break;
 	case 2:
+		//for (int i = 0; i < n; i++)
+		//{
+		//	b.push_back(i + 1);
+		//}
+		//break;
 		for (int i = 0; i < n; i++)
 		{
-			b.push_back(i + 1);
+			b.push_back(0);
+			for (int j = 0; j < n; j++)
+			{
+				b[i] += ithJthDenseElem(i, j) * (j + 1);
+			}
 		}
-		break;
 	}
 }
 
@@ -111,21 +125,21 @@ precision LinearSystem::getRelativeDiscrepancy() const
 	return sqrt(b_minus_ax_norm/b_norm);
 }
 
-precision LinearSystem::getScalarProductOfIthRowAndX(int i, std::vector<precision> x) const
-{
-	precision scalar_product = 0;
-	int first_diag_start_offset = (i > 0 ? 1 : 0);
-	int second_diag_start_offset = (i > m - 1 ? 1 : 0);
-	int first_diag_end_offset = (i > n - 1 - 1 ? 1 : 0);
-	int second_diag_end_offset = (i > n - m - 1 ? 1 : 0);
-	//j only goes over non-zero elements
-	for (int j = 2 - first_diag_start_offset - second_diag_start_offset, j_dense = 0; j < 5 - first_diag_end_offset - second_diag_end_offset; j++)
-	{
-		j_dense = i + shift[j];
-		scalar_product += matrix[i][j] * x[j_dense];
-	}
-	return scalar_product;
-}
+//precision LinearSystem::getScalarProductOfIthRowAndX(int i, std::vector<precision> x) const
+//{
+//	precision scalar_product = 0;
+//	int first_diag_start_offset = (i > 0 ? 1 : 0);
+//	int second_diag_start_offset = (i > m - 1 ? 1 : 0);
+//	int first_diag_end_offset = (i > n - 1 - 1 ? 1 : 0);
+//	int second_diag_end_offset = (i > n - m - 1 ? 1 : 0);
+//	//j only goes over non-zero elements
+//	for (int j = 2 - first_diag_start_offset - second_diag_start_offset, j_dense = 0; j < 5 - first_diag_end_offset - second_diag_end_offset; j++)
+//	{
+//		j_dense = i + shift[j];
+//		scalar_product += matrix[i][j] * x[j_dense];
+//	}
+//	return scalar_product;
+//}
 
 precision LinearSystem::getNextIterationOfXIth(int i, precision omega) const
 {
@@ -148,7 +162,7 @@ void LinearSystem::solveJacobi()
 {
 	std::vector<precision> x_new;
 	x_new.resize(n);
-	precision norm;
+	precision relative_discrepancy;
 	int iterations = 0;
 	do
 	{
@@ -162,23 +176,64 @@ void LinearSystem::solveJacobi()
 			x[i] = x_new[i];
 		}
 		iterations++;
-	} while (getRelativeDiscrepancy() > eps && iterations < max_iterations); //while (norm > eps && iterations < max_iterations);
-	std::cout << "Jacobi iterations: " << iterations << "\n";
+		relative_discrepancy = getRelativeDiscrepancy();
+		//std::cout << "Jacobi iteration #" << iterations << "; relative discrepancy: " << relative_discrepancy << "\n";
+	} while (relative_discrepancy > eps && iterations < max_iterations); //while (norm > eps && iterations < max_iterations);
+	std::cout << "\nJacobi iterations: " << iterations << "\n";
+
+	std::ofstream output_stream("x_jacobi.txt");
+	if (!output_stream)
+		throw std::string("Unable to open output file");
+
+	for (int i = 0; i < n; i++)
+	{
+		std::cout << x[i] << "\t";
+		output_stream << x[i] << "\t";
+	}
+	std::cout << "\n***";
+	for (int i = 0; i < n; i++)
+	{
+		std::cout << i+1-x[i] << "\t";
+		//output_stream << x[i] << "\t";
+		x[i] = 0;
+	}
+	std::cout << "\n";
+	output_stream.close();
 }
 
 void LinearSystem::solveGauss_Seidel()
 {
-	precision norm;
+	precision relative_discrepancy;
 	int iterations = 0;
 	do
 	{
 		for (int i = 0; i < n; i++)
 		{
-			x[i] = getNextIterationOfXIth(i, omega_jacobi);
+			x[i] = getNextIterationOfXIth(i, omega_gauss_seidel);
 		}
 		iterations++;
-	} while (getRelativeDiscrepancy() > eps && iterations < max_iterations); //while (norm > eps && iterations < max_iterations);
-	std::cout << "Gauss-Seidel iterations: " << iterations << "\n";
+		relative_discrepancy = getRelativeDiscrepancy();
+		//std::cout << "G-S iteration #" << iterations << "; relative discrepancy: " << relative_discrepancy << "\n";
+	} while (relative_discrepancy > eps && iterations < max_iterations); //while (norm > eps && iterations < max_iterations);
+	std::cout << "\nGauss-Seidel iterations: " << iterations << "\n";
+
+	std::ofstream output_stream("x_gauss_seidel.txt");
+	if (!output_stream)
+		throw std::string("Unable to open output file");
+	for (int i = 0; i < n; i++)
+	{
+		std::cout << x[i] << "\t";
+		output_stream << x[i] << "\t";
+	}
+	std::cout << "\n***";
+	for (int i = 0; i < n; i++)
+	{
+		std::cout << i + 1 - x[i] << "\t";
+		//output_stream << x[i] << "\t";
+		x[i] = 0;
+	}
+	std::cout << "\n";
+	output_stream.close();
 }
 
 void LinearSystem::solveBlockRelaxation(int block_size)
@@ -402,20 +457,5 @@ void LinearSystem::print() const
 	for (const auto elem : x)
 	{
 		std::cout << elem << "\t";
-	}
-}
-
-BlockSLAU::BlockSLAU(const LinearSystem& slau, int block_size0, int i_block, int j_block) :
-	block_size(slau.n% block_size0 == 0 ? block_size0 : throw "Block size must divide matrix dimension evenly"),
-	matrix(),
-	b(),
-	x()
-{
-	matrix.resize(block_size);
-	b.resize(block_size);
-	x.resize(block_size);
-	for (int i = 0; i < block_size; i++)
-	{
-		b.push_back(1);
 	}
 }
