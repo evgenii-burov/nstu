@@ -17,42 +17,6 @@ DifferentialEquation::DifferentialEquation(std::string input_file_name) :
 	input_file.close();
 }
 
-//double DifferentialEquation::getNextY(double t, double y, int method) const
-//{
-//	switch (method)
-//	{
-//	default:
-//		throw("Incorrect DifferentialEquation method");
-//	case 1:
-//		return y + h * getYDerivative(t, y);
-//	case 2:
-//		return y + h * (1. / 2) * ((getYDerivative(t, y)) + (getYDerivative(t + h, y + h * getYDerivative(t, y))));
-//	case 3:
-//		return y + h * getYDerivative(t + h / 2, y + (h / 2) * getYDerivative(t, y));
-//	case 4:
-//	{
-//		double f_of_x, df_over_dx;
-//		double x = 1;
-//		int iterations_max = 10;
-//		int iterations = 0;
-//		while (true)
-//		{
-//			f_of_x = x - y - h * getYDerivative(t + h, x);
-//			df_over_dx = 1-h*(2*h+2*t);
-//			x -= f_of_x / df_over_dx;
-//			if(abs(f_of_x/df_over_dx) < t_eps)
-//				return x;
-//			if (iterations > iterations_max)
-//			{
-//				std::cout << "ITERATIONS: " << iterations;
-//				return x;
-//			}
-//			iterations++;
-//		}
-//	}
-//	}
-//}
-
 void DifferentialEquation::calculateYAnalytic()
 {
 	double t = t_start;
@@ -92,24 +56,6 @@ void DifferentialEquation::calculateYNumerical()
 	}
 }
 
-//void DifferentialEquation::calculateYAnalytic()
-//{
-//	double t = t_start;
-//	bool flag_last = false;
-//	while (true)
-//	{
-//		if (t > t_target || abs(t_target - t) < t_eps)
-//		{
-//			t = t_target;
-//			flag_last = true;
-//		}
-//		y_analytic.push_back(exp(pow(t,2)));
-//		t += h;
-//		if (flag_last)
-//			break;
-//	}
-//}
-
 void DifferentialEquation::printParameters() const
 {
 	std::cout << "t_start: " << t_start;
@@ -128,8 +74,8 @@ void DifferentialEquation::writeToFile(std::string output_file_name) const
 	double t = t_start;
 	bool flag_last = false;
 
-	std::cout << std::setprecision(3) << std::scientific;
-	output_file << std::setprecision(3) << std::scientific;
+	std::cout << std::setprecision(6) << std::scientific;
+	output_file << std::setprecision(6) << std::scientific;
 	std::cout << "t\t\ty_n\t\ty_t\t\t|y_n-y_t|\n";
 	output_file << "t\t\ty_n\t\ty_t\t\t|y_n-y_t|\n";
 

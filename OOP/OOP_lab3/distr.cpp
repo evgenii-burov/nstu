@@ -70,7 +70,11 @@ namespace Distr
             (pow(D, 2) * pow(PI, 5) * K) + (2 * pow(cos(PI * form / 2), 2) / (pow(D, 2) * K)) * \
             (24 / pow(a, 5) + 24 * form / pow(a, 4) + 12 * pow(form, 2) / pow(a, 3) + 4 * pow(form, 3) / pow(a, 2) + pow(form, 4) / pow(a, 1)) - 3;
         E = (E + 3) * pow(scale, 4) - 3; //shift scale transformation
-        double characteristics[4]{ M, D, A, E };
+        double* characteristics=new double[4];
+		characteristics[0] = M;
+		characteristics[1] = D;
+		characteristics[2] = A;
+		characteristics[3] = E;
         return characteristics;
     }
 
@@ -323,7 +327,11 @@ namespace Distr
 			e += pow((data[i] - m), 4);
 		}
 		e = e / (n * pow(d, 2)) - 3;
-		double characteristics[4]{ m, d, a, e };
+		double* characteristics = new double[4];
+		characteristics[0] = m;
+		characteristics[1] = d;
+		characteristics[2] = a;
+		characteristics[3] = e;
 		return characteristics;
 	}
 
@@ -352,11 +360,12 @@ namespace Distr
 		output_file << n << "\t" << k << "\n";
 		for (int i = 0; i < n; i++)
 		{
-			output_file << data[i] << "\t";
+			output_file << data[i] << " ";
 		}
+		output_file << "\n";
 		for (int i = 0; i < k; i++)
 		{
-			output_file << freq[i] << "\t";
+			output_file << freq[i] << " ";
 		}
 		output_file << "\n";
 		output_file.close();

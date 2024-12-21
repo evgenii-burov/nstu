@@ -2,8 +2,8 @@
 
 int main()
 {
-	EquationOneEmplicitEulerSimple du1 = EquationOneEmplicitEulerSimple("parameters.txt");
-	du1.calculateYAnalytic();
-	du1.calculateYNumerical();
-	du1.writeToFile("table.txt");
+	EquationTwoRungeKutta du = EquationTwoRungeKutta("parameters.txt");
+	du.calculateYAnalytic();
+	du.calculateYNumerical();
+	du.writeToFile("table.txt");
 }
