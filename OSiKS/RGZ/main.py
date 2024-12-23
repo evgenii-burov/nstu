@@ -1,6 +1,8 @@
 from tkinter import *
 import time
+from tkinter.messagebox import showinfo
 
+from PIL.ImImagePlugin import number
 from PIL.ImageColor import colormap
 from numpy.ma.core import left_shift
 
@@ -55,7 +57,7 @@ class RAM:
 
     def removeTask(self, task_number):
         if task_number < 1:
-            raise ValueError
+            raise CannotRemoveTask
         if task_number > len(self.tasks):
             raise CannotRemoveTask
         for i in range(self.tasks[task_number-1].first_block, self.tasks[task_number-1].first_block+self.tasks[task_number-1].size):
@@ -67,24 +69,37 @@ class RAM:
         i=0
         while i < len(self.tasks):
             if self.tasks[i].time_of_completion == self.time:
-                print(f"REMOVED")
                 self.removeTask(i+1)
             else:
                 i+=1
 
+    # def defragmentMemory(self):
+    #     self.memory_array = [0]*self.memory_size
+    #     sum_of_sizes = 0
+    #     for task in self.tasks:
+    #         sum_of_sizes += task.size
+    #     if sum_of_sizes > self.memory_size:
+    #         raise Exception
+    #     for i in range(sum_of_sizes):
+    #         self.memory_array[i]=1
+
     def defragmentMemory(self):
-        self.memory_array = [0]*self.memory_size
-        sum_of_sizes = 0
+        array_of_names=[]
+        array_of_sizes=[]
+        array_of_times=[]
         for task in self.tasks:
-            sum_of_sizes += task.size
-        if sum_of_sizes > self.memory_size:
-            raise Exception
-        for i in range(sum_of_sizes):
-            self.memory_array[i]=1
+            array_of_names.append(task.name)
+            array_of_sizes.append(task.size)
+            array_of_times.append(task.time_of_completion - self.time)
+        number_of_tasks = len(self.tasks)
+        for i in range(number_of_tasks):
+            self.removeTask(1)
+        for i in range(number_of_tasks):
+            self.addTask(array_of_names[i],array_of_sizes[i],array_of_times[i])
 
 def update():
     current_time=str(ram.time)
-    time_label.config(text=f'Currect time is: {current_time}')
+    time_label.config(text=f'Current time is: {current_time}')
     tasks_headline.config(text=f'Current tasks (time is {current_time}):')
     #memory array render
     m=''
@@ -113,18 +128,51 @@ def incrementTime():
 
 def setMemory():
     global ram
+    try:
+        mem_size=int(memory_entry.get())
+    except ValueError:
+        showinfo("Error", 'Invalid input')
+        return
+    if mem_size < 0 or mem_size > 1024:
+        showinfo("Error", 'Memory size out of valid range')
+        return
     ram=RAM(int(memory_entry.get()))
     update()
 
 def addTask():
-    t_size=int(task_size_entry.get())
-    t_time=int(task_time_entry.get())
-    ram.addTask('placeholder', t_size, t_time)
+    try:
+        t_size = int(task_size_entry.get())
+        t_time = int(task_time_entry.get())
+    except ValueError:
+        showinfo("Error", 'Invalid input')
+        return
+    if t_size < 1:
+        showinfo("Error", 'Task size must be greater than zero')
+        return
+    if t_time < 1:
+        showinfo("Error", 'Task lifetime must be greater than zero')
+        return
+    try:
+        ram.addTask('placeholder', t_size, t_time)
+    except CannotAddTask:
+        showinfo("Error", 'Not enough memory for the task')
+        return
     update()
 
 def removeTask():
-    task_number = int(task_remove_entry.get())
-    ram.removeTask(task_number)
+    try:
+        task_number = int(task_remove_entry.get())
+    except ValueError:
+        showinfo("Error", 'Invalid input')
+        return
+    if task_number < 1:
+        showinfo("Error", 'Invalid task number')
+        return
+    try:
+        ram.removeTask(task_number)
+    except CannotRemoveTask:
+        showinfo("Error", 'There is no task with such a number')
+        return
     update()
 
 def defragment():
@@ -142,13 +190,13 @@ if __name__ == "__main__":
     memory_headline.grid(row=10, column=10)
 
     tasks_headline = Label(window, text='Current tasks:', font=('Arial', 20),fg='blue', justify="right")
-    tasks_headline.grid(row=10, column=11, sticky='w')
+    tasks_headline.grid(row=10, column=13, sticky='w')
     #Displays
     memory = Label(window, text='', font=('Arial',8), justify="left")
     memory.grid(row=11, column=10)
 
     tasks = Label(window, text='', font=('Arial',12))
-    tasks.grid(row=11, column=11, sticky='n')
+    tasks.grid(row=11, column=13, sticky='n')
     #Time increment and label
     time_label = Label(window, text='')
     time_label.grid(row=0, column=0, sticky='w')
