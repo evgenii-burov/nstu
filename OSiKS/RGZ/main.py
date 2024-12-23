@@ -85,6 +85,7 @@ class RAM:
 def update():
     current_time=str(ram.time)
     time_label.config(text=f'Currect time is: {current_time}')
+    tasks_headline.config(text=f'Current tasks (time is {current_time}):')
     #memory array render
     m=''
     for i in range(ram.memory_size):
@@ -121,9 +122,18 @@ def addTask():
     ram.addTask('placeholder', t_size, t_time)
     update()
 
+def removeTask():
+    task_number = int(task_remove_entry.get())
+    ram.removeTask(task_number)
+    update()
+
+def defragment():
+    ram.defragmentMemory()
+    update()
+
 if __name__ == "__main__":
     global ram
-    ram = RAM(1024)
+    ram=RAM(0)
     window = Tk()
     window.title('Эмулятор распределителя оперативной памяти')
     window.geometry('1200x600')
@@ -161,7 +171,7 @@ if __name__ == "__main__":
     task_size_entry = Entry(window)
     task_size_entry.grid(row=3, column=1, sticky='w')
 
-    task_time_label = Label(window, text='Task size:')
+    task_time_label = Label(window, text='Task lifetime:')
     task_time_label.grid(row=3, column=2)
     task_time_entry = Entry(window)
     task_time_entry.grid(row=3, column=3, sticky='w')
@@ -169,7 +179,23 @@ if __name__ == "__main__":
     add_task = Button(window, text='Add a task', command=addTask)
     add_task.grid(row=4, column=1, sticky='w')
 
+    #Task remove button
+    task_remove_label = Label(window, text='№ of the task to remove:')
+    task_remove_label.grid(row=5, column=0, sticky='w')
+
+    task_remove_entry = Entry(window)
+    task_remove_entry.grid(row=5, column=1, sticky='w')
+
+    task_remove_button = Button(window, text='Remove task', command=removeTask)
+    task_remove_button.grid(row=6, column=1, sticky='w')
+
+    #Defragmentation button
+    defragment_label = Label(window, text='Click to defragment:')
+    defragment_label.grid(row=7, column=0, sticky='w')
+
+    defragment_button = Button(window, text='Defragment', command=defragment)
+    defragment_button.grid(row=7, column=1, sticky='w')
+
     update()
-    ram.addTask('task1', 123, 5)
 
     window.mainloop()
