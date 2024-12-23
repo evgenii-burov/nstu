@@ -217,7 +217,7 @@ def start5():
 if __name__ == "__main__":
     window = Tk()
     window.title('Лабораторная работа №6')
-    window.geometry('1600x800+400+200')
+    window.geometry('800x600+400+200')
     frame = Frame(
         window,
         padx=10,
