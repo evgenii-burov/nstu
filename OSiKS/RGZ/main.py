@@ -83,6 +83,8 @@ class RAM:
             self.memory_array[i]=1
 
 def update():
+    current_time=str(ram.time)
+    time_label.config(text=f'Currect time is: {current_time}')
     #memory array render
     m=''
     for i in range(ram.memory_size):
@@ -98,15 +100,25 @@ def update():
     #tasks render
     t=''
     i = 1
-    t+="№\tName\tSize\tTime of completion\n"
+    t+="№\tSize\tTime of completion\n"
     for task in ram.tasks:
-        t+=f"{i}\t{task.name}\t{task.size}\t{task.time_of_completion}\n"
+        t+=f"{i}\t{task.size}\t\t{task.time_of_completion}\n"
         i += 1
     tasks.config(text=t, font=8)
+
+def incrementTime():
+    ram.incrementTime()
+    update()
 
 def setMemory():
     global ram
     ram=RAM(int(memory_entry.get()))
+    update()
+
+def addTask():
+    t_size=int(task_size_entry.get())
+    t_time=int(task_time_entry.get())
+    ram.addTask('placeholder', t_size, t_time)
     update()
 
 if __name__ == "__main__":
@@ -114,37 +126,48 @@ if __name__ == "__main__":
     ram = RAM(1024)
     window = Tk()
     window.title('Эмулятор распределителя оперативной памяти')
-    window.geometry('1600x900')
+    window.geometry('1200x600')
     #Headlines
     memory_headline = Label(window, text='Memory array:', font=('Arial', 20), fg='blue', justify="left")
-    memory_headline.grid(row=1, column=5)
+    memory_headline.grid(row=10, column=10)
 
-    tasks_headline = Label(window, text='Current tasks:', font=('Arial', 20),fg='blue', justify="left")
-    tasks_headline.grid(row=1, column=7)
+    tasks_headline = Label(window, text='Current tasks:', font=('Arial', 20),fg='blue', justify="right")
+    tasks_headline.grid(row=10, column=11, sticky='w')
     #Displays
     memory = Label(window, text='', font=('Arial',8), justify="left")
-    memory.grid(row=2, column=5)
+    memory.grid(row=11, column=10)
 
-    tasks = Label(window, text='', font=('Arial',12), anchor='n')
-    tasks.grid(row=2, column=7, sticky='n')
-    #Time increment
-    time_increment = Button(window, text='increment time', command=update)
-    time_increment.grid(row=6, column=1)
+    tasks = Label(window, text='', font=('Arial',12))
+    tasks.grid(row=11, column=11, sticky='n')
+    #Time increment and label
+    time_label = Label(window, text='')
+    time_label.grid(row=0, column=0, sticky='w')
+
+    time_increment = Button(window, text='Increment time', command=incrementTime)
+    time_increment.grid(row=0, column=1, sticky='w')
     #Memory set button
+    memory_entry_lbl = Label(window, text="Memory to set:")
+    memory_entry_lbl.grid(row=1, column=0, sticky='w')
+
     memory_entry = Entry(window)
-    memory_entry.grid(row=8,column=1)
+    memory_entry.grid(row=1,column=1, sticky='w')
 
-    set_memory = Button(window, text='set memory', command=setMemory)
-    set_memory.grid(row=10, column=1)
+    set_memory = Button(window, text='Set memory', command=setMemory)
+    set_memory.grid(row=2, column=1, sticky='w')
     #Task add button
-    task_name_entry = Entry(window)
-    task_name_entry.grid(row=16, column=1)
 
+    task_size_label = Label(window, text='Task size:')
+    task_size_label.grid(row=3, column=0, sticky='w')
     task_size_entry = Entry(window)
-    task_size_entry.grid(row=16, column=2)
+    task_size_entry.grid(row=3, column=1, sticky='w')
 
+    task_time_label = Label(window, text='Task size:')
+    task_time_label.grid(row=3, column=2)
     task_time_entry = Entry(window)
-    task_time_entry.grid(row=16, column=3)
+    task_time_entry.grid(row=3, column=3, sticky='w')
+
+    add_task = Button(window, text='Add a task', command=addTask)
+    add_task.grid(row=4, column=1, sticky='w')
 
     update()
     ram.addTask('task1', 123, 5)
