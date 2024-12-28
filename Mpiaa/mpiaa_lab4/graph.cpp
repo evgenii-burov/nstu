@@ -33,11 +33,6 @@ Graph::Graph(std::ifstream& input_stream)
     }
 }
 
-//Graph::Graph(std::vector<std::ifstream&> input_streams)
-//{
-//
-//}
-
 void Graph::writeAdjacencyList(std::ofstream &output_stream) const
 {
     for (int i = 0; i < numVertices; i++)
@@ -74,7 +69,7 @@ void Graph::breadthFirstSearch(std::ofstream& output_stream, int start) const
     output_stream.close();
 }
 
-void Graph::printGraphComponents() const
+void Graph::writeGraphComponentsToFile(std::string output_file_name) const
 {
     std::vector<std::vector<int>> graph_components;
     std::vector<int> current_component;
@@ -107,14 +102,18 @@ void Graph::printGraphComponents() const
     {
         vectorBubbleSort(component);
     }
+    std::ofstream output_stream(output_file_name);
+    if (!output_stream)
+        throw std::string("Couldn't open file " + output_file_name);
+    output_stream << "Graph has " << graph_components.size() << " component(s).\n";
     for (int i = 0; i < graph_components.size(); i ++)
     {
-        std::cout << "Component #" << i+1 << ": ";
+        output_stream << "Component #" << i+1 << ": ";
         for (const auto& vertex : graph_components[i])
         {
-            std::cout << vertex+1 << " ";
+            output_stream << vertex+1 << " ";
         }
-        std::cout << "\n";
+        output_stream << "\n";
     }
 }
 

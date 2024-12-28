@@ -15,7 +15,11 @@ private:
 	void vectorBubbleSort(std::vector<int>& v) const;
 public:
 	Graph(std::ifstream& input_stream);
-	Graph(std::vector<std::ifstream&> input_streams);
+
+	int getVertices() const
+	{
+		return numVertices;
+	}
 
 	void writeAdjacencyList(std::ofstream& output_stream) const;
 
@@ -23,5 +27,5 @@ public:
 	//given in 1..num_vertices notation
 	void breadthFirstSearch(std::ofstream& output_stream, int start) const;
 
-	void printGraphComponents() const;
+	void writeGraphComponentsToFile(std::string output_file_name) const;
 };
