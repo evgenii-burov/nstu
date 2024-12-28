@@ -181,6 +181,15 @@ void LinearSystem::solveJacobi()
 	} while (relative_discrepancy > eps && iterations < max_iterations); //while (norm > eps && iterations < max_iterations);
 	std::cout << "\nJacobi iterations: " << iterations << "\n";
 
+	precision error_norm = 0, true_solution_norm=0;
+	for (int i = 0; i < n; i++)
+	{
+		error_norm += pow(x[i] - (i + 1), 2);
+		true_solution_norm += pow((i + 1), 2);
+	}
+	std::cout << "\nJacobi conditionality number: " << sqrt(error_norm / true_solution_norm)/getRelativeDiscrepancy() << "\n";
+
+
 	std::ofstream output_stream("x_jacobi.txt");
 	if (!output_stream)
 		throw std::string("Unable to open output file");
@@ -201,7 +210,7 @@ void LinearSystem::solveJacobi()
 	output_stream.close();
 }
 
-void LinearSystem::solveGauss_Seidel()
+void LinearSystem::solveGaussSeidel()
 {
 	precision relative_discrepancy;
 	int iterations = 0;
@@ -216,6 +225,14 @@ void LinearSystem::solveGauss_Seidel()
 		//std::cout << "G-S iteration #" << iterations << "; relative discrepancy: " << relative_discrepancy << "\n";
 	} while (relative_discrepancy > eps && iterations < max_iterations); //while (norm > eps && iterations < max_iterations);
 	std::cout << "\nGauss-Seidel iterations: " << iterations << "\n";
+
+	precision error_norm = 0, true_solution_norm = 0;
+	for (int i = 0; i < n; i++)
+	{
+		error_norm += pow(x[i] - (i + 1), 2);
+		true_solution_norm += pow((i + 1), 2);
+	}
+	std::cout << "\nGauss-Seidel condition number: " << sqrt(error_norm / true_solution_norm) / getRelativeDiscrepancy() << "\n";
 
 	std::ofstream output_stream("x_gauss_seidel.txt");
 	if (!output_stream)

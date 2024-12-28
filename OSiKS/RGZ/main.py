@@ -110,15 +110,14 @@ def update():
             m+='#'
         if i%50==49:
             m+='\n'
-    print(m)
     memory.config(text=m)
 
     #tasks render
     t=''
     i = 1
-    t+="№\tSize\tTime of completion\n"
+    t+="№\tSize\tF\tBlock 0\n"
     for task in ram.tasks:
-        t+=f"{i}\t{task.size}\t\t{task.time_of_completion}\n"
+        t+=f"{i}\t{task.size}\t{task.time_of_completion}\t{task.first_block+1}\n"
         i += 1
     tasks.config(text=t, font=8)
 
@@ -134,7 +133,7 @@ def setMemory():
         showinfo("Error", 'Invalid input')
         return
     if mem_size < 0 or mem_size > 1024:
-        showinfo("Error", 'Memory size out of valid range')
+        showinfo("Error", 'Memory size out of valid range (0..1024)')
         return
     ram=RAM(int(memory_entry.get()))
     update()
@@ -195,7 +194,7 @@ if __name__ == "__main__":
     memory = Label(window, text='', font=('Arial',8), justify="left")
     memory.grid(row=11, column=10)
 
-    tasks = Label(window, text='', font=('Arial',12))
+    tasks = Label(window, text='', font=('Arial',8))
     tasks.grid(row=11, column=13, sticky='n')
     #Time increment and label
     time_label = Label(window, text='')

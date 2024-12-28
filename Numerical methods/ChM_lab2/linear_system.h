@@ -48,7 +48,7 @@ public:
 
 	void solveJacobi();
 
-	void solveGauss_Seidel();
+	void solveGaussSeidel();
 
 	void solveBlockRelaxation(int block_size);
 
