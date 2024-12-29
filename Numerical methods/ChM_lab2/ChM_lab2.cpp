@@ -4,6 +4,7 @@ int main()
 {
     try
     {
+        //changed smth
         precision var;
         LinearSystem slau = LinearSystem("parameters.txt");
         slau.print();
