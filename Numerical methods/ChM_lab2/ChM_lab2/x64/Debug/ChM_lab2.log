@@ -1,3 +1,3 @@
-﻿  ChM_lab2.cpp
-C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\ChM_lab2.cpp(1,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
-  ChM_lab2.vcxproj -> C:\Users\evgen\source\repos\nstu\Numerical methods\ChM_lab2\x64\Debug\ChM_lab2.exe
+﻿  linear_system.cpp
+C:\Users\borov\source\repos\nstu\Numerical methods\ChM_lab2\linear_system.cpp(411,1): warning C4715: LinearSystem::ithJthDenseElem: значение возвращается не при всех путях выполнения
+  ChM_lab2.vcxproj -> C:\Users\borov\source\repos\nstu\Numerical methods\ChM_lab2\x64\Debug\ChM_lab2.exe

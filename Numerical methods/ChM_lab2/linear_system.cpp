@@ -319,14 +319,8 @@ void LinearSystem::solveBlockRelaxation(int block_size)
 			vector_r[i] -= AijTimesXj_i;
 			vector_r[i] *= omega_block_relaxation;
 		}
+
 		//set up the block slau matrix
-		//for (int i = block_shift; i < block_shift + block_size; i++)
-		//{
-		//	for (int j = 2-(i % 2); j < 4 - (i % 2); j++)
-		//	{
-		//		matrix_block[i - block_shift][j - 1 - ((i + 1) % 2)] = matrix[i][j];
-		//	}
-		//}
 		for (int i = block_shift; i < block_shift + block_size; i++)
 		{
 			for (int j = block_shift; j < block_shift + block_size; j++)
@@ -334,14 +328,7 @@ void LinearSystem::solveBlockRelaxation(int block_size)
 				matrix_block[i - block_shift][j - block_shift] = ithJthDenseElem(i, j);
 			}
 		}
-		for (int i = 0; i < block_size; i++)
-		{
-			for (int j = 0; j < block_size; j++)
-			{
-				std::cout << matrix_block[i][j] << "\t";
-			}
-			std::cout << "\n";
-		}
+
 		//LU-decompose the block matrix
 		precision sum_over_k = 0;
 		for (int i = 0; i < block_size; i++)
@@ -372,14 +359,15 @@ void LinearSystem::solveBlockRelaxation(int block_size)
 				}
 			}
 		}
-		std::cout << "--------\n";
-		for (int i = 0; i < block_size; i++)
+		
+
+		for (int i = block_shift; i < block_shift + block_size; i++)
 		{
-			for (int j = 0; j < block_size; j++)
+			sum_over_k = 0;
+			for (int k = block_shift; k < block_shift + block_size; k++)
 			{
-				std::cout << matrix_block[i][j] << "\t";
+				sum_over_k += 999;
 			}
-			std::cout << "\n";
 		}
 	}
 }
