@@ -2,11 +2,6 @@ from tkinter import *
 import time
 from tkinter.messagebox import showinfo
 
-from PIL.ImImagePlugin import number
-from PIL.ImageColor import colormap
-from numpy.ma.core import left_shift
-
-
 class CannotAddTask(Exception):
     pass
 
