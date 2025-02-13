@@ -1,12 +1,14 @@
 !define BLANK ""
-C:\PV\lab3\l3src.obj : C:\PV\lab3\l3src.for .AUTODEPEND
+C:\Users\borov\Documents\PV\lab3\l3src.obj : C:\Users\borov\Documents\PV\lab&
+3\l3src.for .AUTODEPEND
  @C:
- cd C:\PV\lab3
+ cd C:\Users\borov\Documents\PV\lab3
  wfc386 l3src.for -d2 -q -dep
 
-C:\PV\lab3\l3.exe : C:\PV\lab3\l3src.obj .AUTODEPEND
+C:\Users\borov\Documents\PV\lab3\l3.exe : C:\Users\borov\Documents\PV\lab3\l&
+3src.obj .AUTODEPEND
  @C:
- cd C:\PV\lab3
+ cd C:\Users\borov\Documents\PV\lab3
  @%write l3.lk1 FIL l3src.obj
  @%append l3.lk1 
 !ifneq BLANK ""
