@@ -6,118 +6,109 @@
 #include <sstream>
 #include <string>
 using namespace std;
-const int U = 256; // username length
-const int M = 1000; // message length
-const int maxClients = 5; // maximum number of users
-int curClients; // number of connected users
-char usernames[maxClients + 1][U];
 
-SOCKET servSock;
-SOCKET clSockets[maxClients];
-SOCKADDR_IN clSADDR[maxClients];
-USHORT ports[maxClients];
+const int USERNAME_LENGTH = 256;
+const int MESSAGE_BUFFER_SIZE = 1000;
+const int MAX_CLIENTS = 5;
+int currentClientCount;
+char clientUsernames[MAX_CLIENTS + 1][USERNAME_LENGTH];
 
-DWORD WINAPI chat(LPVOID clientSocket)
+SOCKET serverSocket;
+SOCKET clientSockets[MAX_CLIENTS];
+SOCKADDR_IN clientAddresses[MAX_CLIENTS];
+USHORT clientPorts[MAX_CLIENTS];
+
+DWORD WINAPI HandleClientCommunication(LPVOID clientSocket)
 {
-    int retVal; // return value for error check
-    char Req[M]; // request
-    char Resp[M]; // response
-    int i, j, cur;
+    int result;
+    char receivedMessage[MESSAGE_BUFFER_SIZE];
+    char responseMessage[MESSAGE_BUFFER_SIZE];
+    int i, j, currentClientIndex;
 
-    SOCKET clientSock;
-    clientSock = *((SOCKET*)clientSocket);
+    SOCKET clientSocketHandle;
+    clientSocketHandle = *((SOCKET*)clientSocket);
 
     while (true)
     {
-        // message from the client
-        retVal = recv(clientSock, Req, M, 0);
+        result = recv(clientSocketHandle, receivedMessage, MESSAGE_BUFFER_SIZE, 0);
 
-        if (retVal == SOCKET_ERROR)
+        if (result == SOCKET_ERROR)
         {
             cout << "Error: Unable to receive message!" << endl;
-            closesocket(clientSock);
+            closesocket(clientSocketHandle);
             cout << "Connection closed." << endl;
             return SOCKET_ERROR;
         }
         else
         {
-            // if message is empty
-            if (retVal >= M) retVal = M - 1;
-            Req[retVal] = '\0';
+            if (result >= MESSAGE_BUFFER_SIZE) result = MESSAGE_BUFFER_SIZE - 1;
+            receivedMessage[result] = '\0';
         }
 
-        //cout << "Data received." << endl;
-
-        SOCKADDR_IN sin;
-        for (i = 0; i < curClients; i++)
+        SOCKADDR_IN clientAddress;
+        for (i = 0; i < currentClientCount; i++)
         {
-            if (clSockets[i] == clientSock)
+            if (clientSockets[i] == clientSocketHandle)
             {
-                sin = clSADDR[i];
+                clientAddress = clientAddresses[i];
             }
         }
 
-        cur = 0;
-        while (ports[cur] != sin.sin_port) // username search
+        currentClientIndex = 0;
+        while (clientPorts[currentClientIndex] != clientAddress.sin_port)
         {
-            cur++;
+            currentClientIndex++;
         }
 
-        if (!strcmp(Req, "/q")) // if the user entered /q (quit)
+        if (!strcmp(receivedMessage, "/exit"))
         {
-            // notify all clients that the user is logged out
-            Resp[0] = '\0';
-            strcat_s(Resp, usernames[cur]);
-            strcat_s(Resp, " left the chat.");
+            responseMessage[0] = '\0';
+            strcat_s(responseMessage, clientUsernames[currentClientIndex]);
+            strcat_s(responseMessage, " left the chat.");
 
-            for (i = 0; i < curClients; i++)
+            for (i = 0; i < currentClientCount; i++)
             {
-                if (clSockets[i] != clientSock) retVal = send(clSockets[i], Resp, M, 0);
+                if (clientSockets[i] != clientSocketHandle) result = send(clientSockets[i], responseMessage, MESSAGE_BUFFER_SIZE, 0);
             }
 
-            if (retVal == SOCKET_ERROR)
+            if (result == SOCKET_ERROR)
             {
                 cout << "Error: Unable to send message!" << endl;
                 return SOCKET_ERROR;
             }
 
             cout << "Client disconnected." << endl;
-            closesocket(clientSock);
+            closesocket(clientSocketHandle);
             cout << "Connection closed." << endl;
 
-            // delete user information
-            for (j = cur; j < curClients; j++)
+            for (j = currentClientIndex; j < currentClientCount; j++)
             {
-                clSockets[j] = clSockets[j + 1];
-                clSADDR[j] = clSADDR[j + 1];
-                ports[j] = ports[j + 1];
-                strcpy_s(usernames[j], usernames[j + 1]);
+                clientSockets[j] = clientSockets[j + 1];
+                clientAddresses[j] = clientAddresses[j + 1];
+                clientPorts[j] = clientPorts[j + 1];
+                strcpy_s(clientUsernames[j], clientUsernames[j + 1]);
             }
 
-            clSockets[curClients - 1] = SOCKET_ERROR;
-            curClients--;
-            cout << "Current online: " << curClients << endl; // print the updated number of online users
+            clientSockets[currentClientCount - 1] = SOCKET_ERROR;
+            currentClientCount--;
+            cout << "Current online: " << currentClientCount << endl;
             return SOCKET_ERROR;
         }
 
-        if (Req[0] != '\0') // if the received message isn't an empty string
+        if (receivedMessage[0] != '\0')
         {
-            // print username and message
-            cout << usernames[cur] << ": " << Req << endl;
-            Resp[0] = '\0';
-            strcat_s(Resp, usernames[cur]);
-            strcat_s(Resp, ": ");
-            strcat_s(Resp, Req);
+            cout << clientUsernames[currentClientIndex] << ": " << receivedMessage << endl;
+            responseMessage[0] = '\0';
+            strcat_s(responseMessage, clientUsernames[currentClientIndex]);
+            strcat_s(responseMessage, ": ");
+            strcat_s(responseMessage, receivedMessage);
 
-            //cout << "Sending response from the server." << endl;
-
-            // send message to other users
-            for (i = 0; i < curClients; i++)
+            for (i = 0; i < currentClientCount; i++)
             {
-                if (clSockets[i] != clientSock) retVal = send(clSockets[i], Resp, M, 0);
+                if (clientSockets[i] != clientSocketHandle) result = send(clientSockets[i], responseMessage, MESSAGE_BUFFER_SIZE, 0);
             }
 
-            if (retVal == SOCKET_ERROR)
+            if (result == SOCKET_ERROR)
             {
                 cout << "Error: Unable to send message!" << endl;
                 return SOCKET_ERROR;
@@ -128,21 +119,20 @@ DWORD WINAPI chat(LPVOID clientSocket)
 
 int main()
 {
-    int retVal;
+    int result;
     int i;
-    char NewClient[M];
+    char newClientMessage[MESSAGE_BUFFER_SIZE];
 
-    curClients = 0;
+    currentClientCount = 0;
 
-    WORD sockVer;
+    WORD socketVersion;
     WSADATA wsaData;
-    sockVer = MAKEWORD(2, 2);
-    WSAStartup(sockVer, &wsaData);
+    socketVersion = MAKEWORD(2, 2);
+    WSAStartup(socketVersion, &wsaData);
 
-    // creating socket
-    servSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-    if (servSock == INVALID_SOCKET)
+    if (serverSocket == INVALID_SOCKET)
     {
         cout << "Error: Unable to create socket!" << endl;
         WSACleanup();
@@ -150,20 +140,19 @@ int main()
         return SOCKET_ERROR;
     }
 
-    for (i = 0; i < maxClients; i++)
+    for (i = 0; i < MAX_CLIENTS; i++)
     {
-        clSockets[i] = SOCKET_ERROR;
+        clientSockets[i] = SOCKET_ERROR;
     }
 
-    SOCKADDR_IN sin;
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(2008);
-    sin.sin_addr.s_addr = INADDR_ANY;
+    SOCKADDR_IN serverAddress;
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_port = htons(2008);
+    serverAddress.sin_addr.s_addr = INADDR_ANY;
 
-    // binding socket
-    retVal = bind(servSock, (LPSOCKADDR)&sin, sizeof(sin));
+    result = bind(serverSocket, (LPSOCKADDR)&serverAddress, sizeof(serverAddress));
 
-    if (retVal == SOCKET_ERROR)
+    if (result == SOCKET_ERROR)
     {
         cout << "Error: Unable to bind socket!" << endl;
         WSACleanup();
@@ -171,14 +160,13 @@ int main()
         return SOCKET_ERROR;
     }
 
-    cout << "Server started at port: " << htons(sin.sin_port) << endl;
+    cout << "Server started at port: " << htons(serverAddress.sin_port) << endl;
 
     while (true)
     {
-        // starting to listen
-        retVal = listen(servSock, 10);
+        result = listen(serverSocket, 10);
 
-        if (retVal == SOCKET_ERROR)
+        if (result == SOCKET_ERROR)
         {
             cout << "Error: Cannot listen to socket!" << endl;
             WSACleanup();
@@ -186,14 +174,13 @@ int main()
             return SOCKET_ERROR;
         }
 
-        SOCKET clientSock;
-        SOCKADDR_IN from;
-        int fromlen = sizeof(from);
+        SOCKET clientSocketHandle;
+        SOCKADDR_IN clientAddress;
+        int clientAddressLength = sizeof(clientAddress);
 
-        // accepting the client's request
-        clientSock = accept(servSock, (struct sockaddr*)&from, &fromlen);
+        clientSocketHandle = accept(serverSocket, (struct sockaddr*)&clientAddress, &clientAddressLength);
 
-        if (clientSock == INVALID_SOCKET)
+        if (clientSocketHandle == INVALID_SOCKET)
         {
             cout << "Error: Unable to accept socket!" << endl;
             WSACleanup();
@@ -201,76 +188,68 @@ int main()
             return SOCKET_ERROR;
         }
 
-        cout << "New connection: " << inet_ntoa(from.sin_addr) << ":" << htons(from.sin_port) << endl;
-        cout << "Users: " << curClients + 1 << endl;
+        cout << "New connection: " << inet_ntoa(clientAddress.sin_addr) << ":" << htons(clientAddress.sin_port) << endl;
+        cout << "Users: " << currentClientCount + 1 << endl;
 
-        // get username of a new client
-        retVal = recv(clientSock, usernames[curClients], U, 0);
+        result = recv(clientSocketHandle, clientUsernames[currentClientCount], USERNAME_LENGTH, 0);
 
-        // get client data
-        if (retVal == SOCKET_ERROR)
+        if (result == SOCKET_ERROR)
         {
             cout << "Error: Unable to receive message!" << endl;
             system("pause");
             return SOCKET_ERROR;
         }
 
-        // if username is /shutdown
-        if (!strcmp(usernames[curClients], "/shutdown"))
+        if (!strcmp(clientUsernames[currentClientCount], "/shutdown"))
         {
-            // send "Server shutdown" to all clients and close sockets
-            for (i = 0; i < curClients; i++)
+            for (i = 0; i < currentClientCount; i++)
             {
-                retVal = send(clSockets[i], "Server shutdown.", M, 0);
-                closesocket(clSockets[i]);
+                result = send(clientSockets[i], "Server shutdown.", MESSAGE_BUFFER_SIZE, 0);
+                closesocket(clientSockets[i]);
             }
 
-            retVal = send(clientSock, "Server shutdown.", M, 0);
-            closesocket(clientSock);
+            result = send(clientSocketHandle, "Server shutdown.", MESSAGE_BUFFER_SIZE, 0);
+            closesocket(clientSocketHandle);
             break;
         }
         else
         {
-            // if the maximum number of users isn't reached
-            if (curClients < maxClients)
+            if (currentClientCount < MAX_CLIENTS)
             {
-                // save and print information about the current user
-                ports[curClients] = from.sin_port;
-                clSockets[curClients] = clientSock;
-                clSADDR[curClients] = from;
-                NewClient[0] = '\0';
+                clientPorts[currentClientCount] = clientAddress.sin_port;
+                clientSockets[currentClientCount] = clientSocketHandle;
+                clientAddresses[currentClientCount] = clientAddress;
+                newClientMessage[0] = '\0';
 
-                strcat_s(NewClient, "Client ");
-                strcat_s(NewClient, usernames[curClients]);
-                strcat_s(NewClient, " connected (IP: ");
-                strcat_s(NewClient, inet_ntoa(from.sin_addr));
-                strcat_s(NewClient, ")");
-                cout << NewClient << endl;
+                strcat_s(newClientMessage, "Client ");
+                strcat_s(newClientMessage, clientUsernames[currentClientCount]);
+                strcat_s(newClientMessage, " connected (IP: ");
+                strcat_s(newClientMessage, inet_ntoa(clientAddress.sin_addr));
+                strcat_s(newClientMessage, ")");
+                cout << newClientMessage << endl;
 
-                curClients++;
+                currentClientCount++;
 
-                // send a message to other clients about the new user
-                for (i = 0; i < curClients; i++)
+                for (i = 0; i < currentClientCount; i++)
                 {
-                    if (clSockets[i] != clientSock) retVal =
-                        send(clSockets[i], NewClient, M, 0);
+                    if (clientSockets[i] != clientSocketHandle) result =
+                        send(clientSockets[i], newClientMessage, MESSAGE_BUFFER_SIZE, 0);
                 }
             }
             else
             {
-                // if the maximum number of users is reached
                 cout << "Max online." << endl;
-                retVal = send(clientSock, "Server is full, please try again later.", U, 0);
-                closesocket(clientSock);
+                result = send(clientSocketHandle, "Server is full, please try again later.", USERNAME_LENGTH, 0);
+                closesocket(clientSocketHandle);
                 cout << "Connection closed." << endl;
             }
 
             DWORD threadID;
-            CreateThread(NULL, NULL, chat, &clientSock, NULL, &threadID);
+            CreateThread(NULL, NULL, HandleClientCommunication, &clientSocketHandle, NULL, &threadID);
         }
     }
 
-    closesocket(servSock);
+    closesocket(serverSocket);
     WSACleanup();
     return 0;
 }

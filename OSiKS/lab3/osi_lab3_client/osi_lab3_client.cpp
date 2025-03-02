@@ -6,79 +6,73 @@
 #include <iostream>
 #include <string>
 using namespace std;
-bool offline; // client status flag
-const int U = 256; // username length
-const int M = 1000; // message length
 
-DWORD WINAPI receive(LPVOID clientSocket)
+bool isOffline;
+const int USERNAME_LENGTH = 256;
+const int MESSAGE_BUFFER_SIZE = 1000;
+
+DWORD WINAPI ReceiveMessages(LPVOID clientSocket)
 {
-    int retVal; // return value for error check
-    char Resp[M]; // response
+    int result;
+    char response[MESSAGE_BUFFER_SIZE];
 
-    SOCKET clientSock;
-    clientSock = *((SOCKET*)clientSocket);
+    SOCKET clientSocketHandle;
+    clientSocketHandle = *((SOCKET*)clientSocket);
 
-    // message from the server
-    retVal = recv(clientSock, Resp, M, 0);
+    result = recv(clientSocketHandle, response, MESSAGE_BUFFER_SIZE, 0);
 
-    // if the server is down
-    if (!strcmp(Resp, "Server shutdown.")) //returns zero if strings are equal
+    if (!strcmp(response, "Server shutting down."))
     {
-        cout << "Server shutdown." << endl;
-        offline = true;
+        cout << "Server shutting down." << endl;
+        isOffline = true;
         return 0;
     }
 
-    // if the server is full
-    if (!strcmp(Resp, "Server is full, please try again later."))
+    if (!strcmp(response, "Server is full. Try again later."))
     {
-        cout << "Server is full, please try again later." << endl;
-        offline = true;
+        cout << "Server is full. Try again later." << endl;
+        isOffline = true;
         return 0;
     }
 
-    // if the client is still working
-    if (!offline)
+    if (!isOffline)
     {
-        if (retVal == SOCKET_ERROR)
+        if (result == SOCKET_ERROR)
         {
-            retVal = 0;
-            cout << "Error: Unable to receive message!" << endl;
-            offline = true;
+            result = 0;
+            cout << "Error: Failed to receive message!" << endl;
+            isOffline = true;
             return 0;
         }
         else
         {
-            // print server message
-            cout << Resp << endl;
+            cout << response << endl;
         }
     }
     return 1;
 }
 
-DWORD WINAPI send(LPVOID clientSocket)
+DWORD WINAPI SendMessages(LPVOID clientSocket)
 {
-    int retVal;
-    char Buf[M]; // buffer array
-    SOCKET clientSock;
-    clientSock = *((SOCKET*)clientSocket);
-    gets_s(Buf);
+    int result;
+    char buffer[MESSAGE_BUFFER_SIZE];
+    SOCKET clientSocketHandle;
+    clientSocketHandle = *((SOCKET*)clientSocket);
+    gets_s(buffer);
 
-    // if the user entered /q (quit)
-    if (!strcmp(Buf, "/q"))
+    if (!strcmp(buffer, "/exit"))
     {
-        offline = true;
-        retVal = send(clientSock, Buf, M, 0);
+        isOffline = true;
+        result = send(clientSocketHandle, buffer, MESSAGE_BUFFER_SIZE, 0);
         return 0;
     }
     else
     {
-        // send message to the server
-        retVal = send(clientSock, Buf, M, 0);
+        result = send(clientSocketHandle, buffer, MESSAGE_BUFFER_SIZE, 0);
 
-        if (retVal == SOCKET_ERROR)
+        if (result == SOCKET_ERROR)
         {
-            cout << "Error: Unable to send message!" << endl;
+            cout << "Error: Failed to send message!" << endl;
             WSACleanup();
             system("pause");
             return 0;
@@ -89,72 +83,67 @@ DWORD WINAPI send(LPVOID clientSocket)
 
 int main()
 {
-    string ip;
+    string serverIP;
     WSADATA wsaData;
-    int retVal = 0;
-    offline = false;
-    char username[U];
-    WORD ver = MAKEWORD(2, 2);
+    int result = 0;
+    isOffline = false;
+    char username[USERNAME_LENGTH];
+    WORD version = MAKEWORD(2, 2);
 
-    WSAStartup(ver, (LPWSADATA)&wsaData);
-    SOCKET clientSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    WSAStartup(version, (LPWSADATA)&wsaData);
+    SOCKET clientSocketHandle = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-    if (clientSock == SOCKET_ERROR)
+    if (clientSocketHandle == SOCKET_ERROR)
     {
-        cout << "Error: Unable to create socket!" << endl;
+        cout << "Error: Failed to create socket!" << endl;
         WSACleanup();
         system("pause");
         return 1;
     }
 
-    // reading IP
     cout << "IP > ";
-    cin >> ip;
+    cin >> serverIP;
     cin.ignore();
 
-    SOCKADDR_IN serverInfo;
-    serverInfo.sin_family = AF_INET;
-    serverInfo.sin_port = htons(2008);
-    inet_pton(AF_INET, ip.c_str(), &serverInfo.sin_addr);
+    SOCKADDR_IN serverAddress;
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_port = htons(2008);
+    inet_pton(AF_INET, serverIP.c_str(), &serverAddress.sin_addr);
 
-    // connecting to the server
-    retVal = connect(clientSock, (LPSOCKADDR)&serverInfo, sizeof(serverInfo));
+    result = connect(clientSocketHandle, (LPSOCKADDR)&serverAddress, sizeof(serverAddress));
 
-    if (retVal == SOCKET_ERROR)
+    if (result == SOCKET_ERROR)
     {
-        cout << "Error: Unable to connect to the server!" << endl;
+        cout << "Error: Failed to connect to the server!" << endl;
         WSACleanup();
         system("pause");
         return 1;
     }
 
-    // reading username
     cout << "Connected!" << endl;
     cout << "Username: ";
     cin >> username;
 
-    // send username to the server
-    retVal = send(clientSock, username, U, 0);
+    result = send(clientSocketHandle, username, USERNAME_LENGTH, 0);
 
-    if (retVal == SOCKET_ERROR)
+    if (result == SOCKET_ERROR)
     {
-        cout << "Error: Unable to send username!" << endl;
+        cout << "Error: Failed to send username!" << endl;
         WSACleanup();
         return 1;
     }
 
-    cout << "Welcome to the chat room. Use /q to exit." << endl;
+    cout << "Welcome to the chat room. Use /exit to leave." << endl;
 
-    // while the client/server is running
-    while (!offline)
+    while (!isOffline)
     {
         DWORD threadID;
-        CreateThread(NULL, NULL, send, &clientSock, NULL, &threadID);
-        CreateThread(NULL, NULL, receive, &clientSock, NULL, &threadID);
+        CreateThread(NULL, NULL, SendMessages, &clientSocketHandle, NULL, &threadID);
+        CreateThread(NULL, NULL, ReceiveMessages, &clientSocketHandle, NULL, &threadID);
         Sleep(1);
     }
 
-    closesocket(clientSock);
+    closesocket(clientSocketHandle);
     WSACleanup();
     return 0;
 }
