@@ -1,0 +1,36 @@
+predicates
+	nondeterm male(symbol)
+	nondeterm female(symbol)
+	nondeterm parent(symbol,symbol)
+	nondeterm happy(symbol)
+	nondeterm sister(symbol,symbol)
+	nondeterm brother(symbol,symbol)
+	nondeterm hasAtLeastTwoChildren(symbol)
+	nondeterm grandchild(symbol,symbol)
+	nondeterm aunt(symbol,symbol)
+clauses
+	happy(Person):-
+	parent(Person,X).
+	
+	sister(Person1,Person2):-
+	parent(X,Person1) and
+	parent(X,Person2) and
+	female(Person1).
+	
+	brother(Person1,Person2):-
+	parent(X,Person1) and
+	parent(X,Person2) and
+	male(Person1).
+	
+	hasAtLeastTwoChildren(Person):-
+	parent(Person, Child) and
+	sister(Child,X) or brother(Child,X).
+	
+	grandchild(GChild, G):-
+	parent(G,X) and
+	parent(X, GChild).
+	
+	aunt(A, Nephew):-
+	sister(A,X) and
+	parent(X,Nephew).
+goal
