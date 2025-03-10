@@ -1,25 +1,55 @@
 body{
+    overflow: auto;
+    padding-top: 50px;
     margin: 0;
-    background-color: rgb(218, 218, 241);
+    background-color: #efefef;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     /*background-image: url("2.jpg");*/
 }
 
-.image-with-text{
-    display: flex;
-    align-items: center; /* Aligns items vertically in the center */
-    margin-bottom: 20px; /* Adds some space between each image-text pair */
+body hr{
+    border: 0;
+    height: 1px;
+    background: #808080;
+    margin: 40px 0;
 }
 
-.image-with-text h2 {
-    margin-left: 20px;
-    margin-top: 0;
-    margin-bottom: 0;
+.image-with-text {
+    display: flex; /* Use Flexbox to align image and text side by side */
+    align-items: flex-start; /* Align items to the top */
+    gap: 20px; /* Add space between the image and text */
+    margin-bottom: 20px; /* Add space between each image-text pair */
 }
 
 .image-with-text img {
-    width: 400px;
-    height: 300px;
+    
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column; /* Stack h2 and p vertically */
+    gap: 5px; /* Add space between h2 and p */
+}
+
+.text-container h2 {
+    margin: 0; /* Remove default margins */
+}
+
+.text-container h4 {
+    margin: 0; /* Remove default margins */
+}
+
+.text-container p {
+    margin: 0; /* Remove default margins */
+}
+
+.text-container a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.text-container a:hover{
+    color: rgb(3, 3, 151);
 }
 
 .header{
@@ -29,42 +59,105 @@ body{
 }
 
 .top_bar{
-    overflow: hidden;
-    background-color: rgb(139, 188, 253);
+    position: fixed;
+    overflow: auto;
+    top: 0;
+    width: 100%;
+    min-height: 50px;
+    margin: auto;
+    background-color: #01204e;
+    border: 1px solid black;
+    color: white;
 }
 
 .top_bar a{
     float: left;
     display: block;
-    color: black;
     text-align: center;
-    padding: 14px 16px;
+    padding-left: 15px;
+    padding-right: 15px;
     text-decoration: none;
+    color: inherit;
 }
 
 .top_bar a:hover {
-    background-color: #ddd;
+    background-color: rgb(80, 121, 175);
     color: black;
   }
 
 .main_content{
-    background-color: rgb(177, 205, 212);
+    background-color: #ffffff;
     color: black;
     width: 80%;
     padding: 10px;
     margin: auto;
-    border-radius: 5px;
-    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.main_content img{
+    width: 800px;
+    height: 450px;
+}
+
+.main_content.contacts p{
+    margin-left: 50px;
+}
+
+.pagination{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-right: 5px;
+} 
+
+.pagination.index{
+    display: inline;
+    padding: 10px;
+    border: 1px solid #01204e;
+}
+
+.pagination.index a{
+    color:rgb(3, 3, 151);
+    text-decoration: none;
+}
+
+.pagination.index a:hover{
+    color:rgb(255, 255, 255);
+    background-color:rgb(3, 3, 151);
+    text-decoration: none;
 }
 
 .footer{
-    background-color: bisque;
-    padding: 50px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: inherit;
+    padding-left: 30px; /* Adjust padding as needed */
+    text-decoration: none;
+    color: black;
+    text-align: left; /* Center the list horizontally */
+}
+
+.footer ul {
+    list-style: none;
+    padding: 0;
+    width: 80%;
 }
 
 .footer li {
     width: 80%;
     margin: auto;
+    margin-bottom: 10px;
+}
+
+.footer li a{
+    text-decoration: inherit;
+    color: inherit;
+}
+
+.footer li a:hover{
+    color: rgb(54, 54, 223);
 }
 
 @media screen and (max-width:1000px){
