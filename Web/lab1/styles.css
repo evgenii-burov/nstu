@@ -4,7 +4,6 @@ body{
     margin: 0;
     background-color: #efefef;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    /*background-image: url("2.jpg");*/
 }
 
 body hr{
@@ -15,10 +14,10 @@ body hr{
 }
 
 .image-with-text {
-    display: flex; /* Use Flexbox to align image and text side by side */
-    align-items: flex-start; /* Align items to the top */
-    gap: 20px; /* Add space between the image and text */
-    margin-bottom: 20px; /* Add space between each image-text pair */
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
 .image-with-text img {
@@ -27,20 +26,20 @@ body hr{
 
 .text-container {
     display: flex;
-    flex-direction: column; /* Stack h2 and p vertically */
-    gap: 5px; /* Add space between h2 and p */
+    flex-direction: column;
+    gap: 5px;
 }
 
 .text-container h2 {
-    margin: 0; /* Remove default margins */
+    margin: 0;
 }
 
 .text-container h4 {
-    margin: 0; /* Remove default margins */
+    margin: 0;
 }
 
 .text-container p {
-    margin: 0; /* Remove default margins */
+    margin: 0;
 }
 
 .text-container a{
@@ -133,10 +132,10 @@ body hr{
     left: 0;
     width: 100%;
     background-color: inherit;
-    padding-left: 30px; /* Adjust padding as needed */
+    padding-left: 30px;
     text-decoration: none;
     color: black;
-    text-align: left; /* Center the list horizontally */
+    text-align: left;
 }
 
 .footer ul {
