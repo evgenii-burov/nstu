@@ -6,4 +6,11 @@ int main()
     std::cout << f_m.dichotomyMethod();
     std::cout << "\n";
     std::cout << f_m.goldenRatioMethod();
+    std::cout << "\n";
+    std::cout << f_m.fibonacciMethod();
+
+    f_m.intervalSearch(-1000, 1);
+
+    std::cout << "\n";
+    
 }
