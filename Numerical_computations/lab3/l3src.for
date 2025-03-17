@@ -7,12 +7,52 @@
         call readVector(mem(n+2),n_al,'al.txt')
         call readVector(mem(n+2+n_al),n_al,'ja.txt')
         call readVector(mem(n+2+2*n_al),n,'di.txt')
+        call readVector(mem(2*n+2+2*n_al),n,'bb.txt')
         
         call printVector(mem(1),n+1)
         call printVector(mem(n+2),n_al)
         call printVector(mem(n+2+n_al),n_al)
         call printVector(mem(n+2+2*n_al),n)
+        call printVector(mem(2*n+2+2*n_al),n)
+        
+        call multipl(mem(1),mem(n+2),mem(n+2+n_al),
+     /  mem(n+2+2*n_al),mem(2*n+2+2*n_al),mem(3*n+2+2*n_al))
+        print*,'a'
+        call printVector(mem(3*n+2+2*n_al), n)
+        print*,'endline'
+        call printDense(mem(1),mem(n+2),mem(n+2+n_al),
+     /  mem(n+2+2*n_al))
         pause
+      end
+      
+      subroutine multipl(ia,al,ja,di,b,x)
+      common/size/n,n_al
+      real ia(*)
+      real ja(*)
+      real al(*)
+      real di(*)
+      real b(*)
+      real x(*)
+      do i=1,n
+        x(i)=di(i)*b(i)
+        do j=nint(ia(i)),nint(ia(i+1)-1)
+          x(i)=x(i)+al(j)*b(nint(ja(j)))
+          x(nint(ja(j)))=x(nint(ja(j)))+al(j)*b(i)
+        enddo
+      enddo
+      end
+      
+      subroutine printDense(ia,al,ja,di)
+      common/size/n,n_al
+      real ia(*)
+      real ja(*)
+      real al(*)
+      real di(*)
+      real b(*)
+      real x(*)
+      do i=1,n
+        write(*, '(e11.4,'|',\)')di(i)
+      enddo
       end
       
       subroutine readVector(v, n_v, name)
