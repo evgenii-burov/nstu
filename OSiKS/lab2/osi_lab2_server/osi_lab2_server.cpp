@@ -5,128 +5,88 @@
 #include <sstream>
 #include <string>
 
-using namespace std;
-int main(void)
+int main()
 {
-	WORD sockVer;
-	WSADATA wsaData;
-	int retVal;
-	sockVer = MAKEWORD(2, 2);
-	WSAStartup(sockVer, &wsaData);
-	//Создаем сокет
-	SOCKET servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-	if (servSock == INVALID_SOCKET)
+	//Launching WSA
+	WSADATA wsa_data;
+	WORD winsock_version = MAKEWORD(2, 2);
+	if (WSAStartup(winsock_version, &wsa_data) != 0)
 	{
-		printf("Unable to create socket\n");
-		WSACleanup();
-		system("pause");
+		std::cout << "WSAStartup failed\n";
 		return SOCKET_ERROR;
 	}
-
-	SOCKADDR_IN sin;
-	sin.sin_family = PF_INET;
-	sin.sin_port = htons(2004);
-	sin.sin_addr.s_addr = INADDR_ANY;
-
-	retVal = bind(servSock, (LPSOCKADDR)&sin, sizeof(sin));
-	if (retVal == SOCKET_ERROR)
+	//Setting servers address
+	SOCKADDR_IN server_addr;
+	server_addr.sin_addr.s_addr = INADDR_ANY;
+	server_addr.sin_port = htons(2008);
+	server_addr.sin_family = AF_INET;
+	//Creating server socket
+	SOCKET server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (server_socket == INVALID_SOCKET)
 	{
-		printf("Unable to bind\n");
+		std::cout << "Unable to create socket\n";
 		WSACleanup();
-		system("pause");
 		return SOCKET_ERROR;
 	}
-	printf("Server started at %s, port %d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
+	//Binding the socket
+	int return_value = bind(server_socket, (LPSOCKADDR)&server_addr, sizeof(server_addr));
+	if (return_value == SOCKET_ERROR)
+	{
+		std::cout << "Binding failed\n";
+		WSACleanup();
+		return SOCKET_ERROR;
+	}
+	std::cout << "Server started on address " << inet_ntoa(server_addr.sin_addr) << ", port " << htons(server_addr.sin_port) << "\n";
+
 	while (true)
 	{
-		//Пытаемся начать слушать сокет
-		retVal = listen(servSock, 10);
-		if (retVal == SOCKET_ERROR)
+		//Listening to the socket
+		return_value = listen(server_socket, 10);
+		if (return_value == SOCKET_ERROR)
 		{
-			printf("Unable to listen\n");
+			std::cout << "Unable to listen\n";
 			WSACleanup();
-			system("pause");
 			return SOCKET_ERROR;
 		}
-		//Ждем клиента
-		SOCKET clientSock;
-		SOCKADDR_IN from;
-		int fromlen = sizeof(from);
-		clientSock = accept(servSock, (struct sockaddr*)&from, &fromlen);
-		if (clientSock == INVALID_SOCKET)
-		{
-			printf("Unable to accept\n");
-			WSACleanup();
-			system("pause");
-			return SOCKET_ERROR;
-		}
-		printf("New connection accepted from %s, port %d\n", inet_ntoa(from.sin_addr), htons(from.sin_port));
-		char szReq[256];
-		retVal = recv(clientSock, szReq, 256, 0);
-		//Пытаемся получить данные от клиента
-		if (retVal == SOCKET_ERROR)
-		{
-			printf("Unable to recv\n");
-			system("pause");
-			return SOCKET_ERROR;
-		}
-		szReq[retVal] = '\0';
-		printf("Data received\n");
-		string s = (const char*)szReq;
-		std::cout << s;
-		if (!s.compare(0, 4, "stop"))// Команда на выключение сервера
-		{
-			printf("Received server shutdown request\n");
-			s = "Server shutdown";
-			retVal = send(clientSock, s.c_str(), 256, 0);
 
-			closesocket(clientSock);
-			break;
+		SOCKET client_socket;
+		SOCKADDR_IN client_addr;
+		int client_addr_size = sizeof(client_addr);
+		client_socket = accept(server_socket, (LPSOCKADDR)&client_addr, &client_addr_size);
+		if (client_socket == INVALID_SOCKET)
+		{
+			std::cout << "Unable to accept\n";
+			WSACleanup();
+			return SOCKET_ERROR;
+		}
+		std::cout << "Connection accepted from " << inet_ntoa(client_addr.sin_addr) \
+			<< ", port " << htons(client_addr.sin_port) << "\n";
+
+		char buffer[1024];
+		return_value = recv(client_socket, buffer, sizeof(buffer), 0);
+		if (return_value > 0 && return_value < 1024)
+		{
+			buffer[return_value] = '\0';
+			std::cout << "Received message: " << buffer << "\n";
+		}
+		else if (return_value == 0)
+		{
+			std::cout << "Connection closed\n";
 		}
 		else
 		{
-			//Обрабатываем данные
-			char szResp[256];
-			string sResp = "";
-			string sFromText = "";
-			for (int i = 0;szReq[i] != '\0';i++)
-			{
-				if (szReq[i] != '\n')
-				{
-					sFromText += szReq[i];
-				}
-				else
-				{
-					sFromText += to_string(sFromText.length()) + "\n";
-					sResp += sFromText;
-					sFromText = "";
-				}
-			}
-			sFromText += to_string(sFromText.length()) + "\n";
-			sResp += sFromText;
-			if (sResp.empty())
-			{
-				sFromText += to_string(sFromText.length()) + "\n";
-				sResp += sFromText;
-			}
-			//Пытаемся отослать данные клиенту
-			strcpy(szResp, sResp.c_str());
-			printf("Sending response from server\n");
-			retVal = send(clientSock, szResp, 256, 0);
-			if (retVal == SOCKET_ERROR)
-			{
-				printf("Unable to send\n");
-				system("pause");
-				return SOCKET_ERROR;
-			}
-			closesocket(clientSock);
-			printf("Connection closed\n");
+			std::cout << "Unable to receive\n";
+			WSACleanup();
+			return SOCKET_ERROR;
+		}
+		std::cout << buffer << "\n";
+		std::cout << strcmp(buffer, "shutdown") << "\n";
+		if (!strcmp(buffer, "shutdown"))
+		{
+			std::cout << "Shutting the server down";
+			closesocket(client_socket);
+			WSACleanup();
+			break;
 		}
 	}
-	//Закрываем сокет	
-	closesocket(servSock);
-	WSACleanup();
-	system("pause");
-	return 0;
 }
