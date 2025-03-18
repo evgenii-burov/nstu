@@ -1,2 +1,6 @@
 ﻿  osi_lab2_server.cpp
+C:\Users\evgen\source\repos\nstu\OSiKS\lab2\osi_lab2_server\osi_lab2_server.cpp(1,9): warning C4005: _WINSOCK_DEPRECATED_NO_WARNINGS: изменение макроопределения
+      C:\Users\evgen\source\repos\nstu\OSiKS\lab2\osi_lab2_server\osi_lab2_server.cpp(1,9):
+      "_WINSOCK_DEPRECATED_NO_WARNINGS" ранее объявлен в командной строке
+  
   osi_lab2_server.vcxproj -> C:\Users\evgen\source\repos\nstu\OSiKS\lab2\osi_lab2_server\x64\Debug\osi_lab2_server.exe

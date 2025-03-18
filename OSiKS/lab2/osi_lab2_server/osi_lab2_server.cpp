@@ -1,92 +1,95 @@
-﻿#pragma comment (lib,"Ws2_32.lib")
-#include <winsock2.h>
-#include <stdio.h>
-#include <iostream> 
-#include <sstream>
-#include <string>
+﻿#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#pragma comment(lib, "Ws2_32.lib")
+#include <WinSock2.h>
+#include <iostream>
+#include <vector>
+#include <thread>
+#include <mutex>
 
-int main()
-{
-	//Launching WSA
-	WSADATA wsa_data;
-	WORD winsock_version = MAKEWORD(2, 2);
-	if (WSAStartup(winsock_version, &wsa_data) != 0)
-	{
-		std::cout << "WSAStartup failed\n";
-		return SOCKET_ERROR;
-	}
-	//Setting servers address
-	SOCKADDR_IN server_addr;
-	server_addr.sin_addr.s_addr = INADDR_ANY;
-	server_addr.sin_port = htons(2008);
-	server_addr.sin_family = AF_INET;
-	//Creating server socket
-	SOCKET server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (server_socket == INVALID_SOCKET)
-	{
-		std::cout << "Unable to create socket\n";
-		WSACleanup();
-		return SOCKET_ERROR;
-	}
-	//Binding the socket
-	int return_value = bind(server_socket, (LPSOCKADDR)&server_addr, sizeof(server_addr));
-	if (return_value == SOCKET_ERROR)
-	{
-		std::cout << "Binding failed\n";
-		WSACleanup();
-		return SOCKET_ERROR;
-	}
-	std::cout << "Server started on address " << inet_ntoa(server_addr.sin_addr) << ", port " << htons(server_addr.sin_port) << "\n";
+const int PORT = 2004;
+const int MAX_CLIENTS = 5;
 
-	while (true)
-	{
-		//Listening to the socket
-		return_value = listen(server_socket, 10);
-		if (return_value == SOCKET_ERROR)
-		{
-			std::cout << "Unable to listen\n";
-			WSACleanup();
-			return SOCKET_ERROR;
-		}
+SOCKET serverSocket;
+std::vector<SOCKET> clientSockets;
+std::mutex mtx; // Mutex for thread-safe access to shared resources
 
-		SOCKET client_socket;
-		SOCKADDR_IN client_addr;
-		int client_addr_size = sizeof(client_addr);
-		client_socket = accept(server_socket, (LPSOCKADDR)&client_addr, &client_addr_size);
-		if (client_socket == INVALID_SOCKET)
-		{
-			std::cout << "Unable to accept\n";
-			WSACleanup();
-			return SOCKET_ERROR;
-		}
-		std::cout << "Connection accepted from " << inet_ntoa(client_addr.sin_addr) \
-			<< ", port " << htons(client_addr.sin_port) << "\n";
+void HandleClient(SOCKET clientSocket) {
+    char buffer[1024];
+    while (true) {
+        int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
+        if (bytesReceived <= 0) {
+            std::lock_guard<std::mutex> lock(mtx); // Lock for thread-safe console output
+            std::cout << "Client disconnected." << std::endl;
+            break;
+        }
 
-		char buffer[1024];
-		return_value = recv(client_socket, buffer, sizeof(buffer), 0);
-		if (return_value > 0 && return_value < 1024)
-		{
-			buffer[return_value] = '\0';
-			std::cout << "Received message: " << buffer << "\n";
-		}
-		else if (return_value == 0)
-		{
-			std::cout << "Connection closed\n";
-		}
-		else
-		{
-			std::cout << "Unable to receive\n";
-			WSACleanup();
-			return SOCKET_ERROR;
-		}
-		std::cout << buffer << "\n";
-		std::cout << strcmp(buffer, "shutdown") << "\n";
-		if (!strcmp(buffer, "shutdown"))
-		{
-			std::cout << "Shutting the server down";
-			closesocket(client_socket);
-			WSACleanup();
-			break;
-		}
-	}
+        buffer[bytesReceived] = '\0'; // Null-terminate the received message
+
+        // Lock for thread-safe console output
+        {
+            std::lock_guard<std::mutex> lock(mtx);
+            std::cout << "Received from client: " << buffer << std::endl;
+        }
+    }
+
+    closesocket(clientSocket);
+}
+
+int main() {
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+        std::cerr << "WSAStartup failed." << std::endl;
+        return 1;
+    }
+
+    serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (serverSocket == INVALID_SOCKET) {
+        std::cerr << "Socket creation failed." << std::endl;
+        WSACleanup();
+        return 1;
+    }
+
+    SOCKADDR_IN serverAddr;
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(PORT);
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+
+    if (bind(serverSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
+        std::cerr << "Bind failed." << std::endl;
+        closesocket(serverSocket);
+        WSACleanup();
+        return 1;
+    }
+
+    if (listen(serverSocket, MAX_CLIENTS) == SOCKET_ERROR) {
+        std::cerr << "Listen failed." << std::endl;
+        closesocket(serverSocket);
+        WSACleanup();
+        return 1;
+    }
+
+    std::cout << "Server is listening on port " << PORT << std::endl;
+
+    while (true) {
+        SOCKET clientSocket = accept(serverSocket, NULL, NULL);
+        if (clientSocket == INVALID_SOCKET) {
+            std::cerr << "Accept failed." << std::endl;
+            continue;
+        }
+
+        // Lock for thread-safe access to clientSockets
+        {
+            std::lock_guard<std::mutex> lock(mtx);
+            clientSockets.push_back(clientSocket);
+            std::cout << "New client connected. Total clients: " << clientSockets.size() << std::endl;
+        }
+
+        // Create a new thread to handle the client
+        std::thread clientThread(HandleClient, clientSocket);
+        clientThread.detach(); // Detach the thread to let it run independently
+    }
+
+    closesocket(serverSocket);
+    WSACleanup();
+    return 0;
 }
