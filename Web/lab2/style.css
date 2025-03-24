@@ -1,5 +1,4 @@
 body{
-    padding-top: 100px;
     background-color:rgb(199, 202, 214);
 }
 
@@ -11,6 +10,11 @@ nav.navbar {
 .navbar-brand.display-1 {
     font-weight: bold !important; /* Make the text bold */
     color: rgb(152, 193, 253) !important; /* Change the text color */
+}
+
+.navbar-brand.display-1:hover {
+    color:rgb(104, 181, 253) !important;
+    transition: color 0.5s ease !important;
 }
 
 .card {
@@ -41,4 +45,17 @@ nav.navbar {
 
 p{
     font-size: large;
+}
+
+.img-fluid{
+    max-height: 600px;
+}
+
+.card-text{
+    max-height: 200px;
+}
+
+li a{
+    color: black;
+    text-decoration: none;
 }
